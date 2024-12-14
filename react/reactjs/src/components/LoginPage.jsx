@@ -16,7 +16,9 @@ const LoginPage = () => {
         <div className="options">
           <Link to="/forgot-password" className="forgot-password">Forgot Password?</Link>
         </div>
+        <Link to="/home">
         <button type="submit" className="login-button">Login</button>
+        </Link>
       </form>
       <p className="signup-prompt">
         Don't have an account? <Link to="/signup">Sign up</Link>
