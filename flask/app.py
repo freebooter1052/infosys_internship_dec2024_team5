@@ -47,5 +47,21 @@ def signup():
 
     return jsonify({"message": "Manager registered successfully"}), 201
 
+@app.route('/api/login', methods=['POST'])
+def login():
+    data = request.json  # Get JSON data from the frontend
+
+    # Validate incoming data
+    required_fields = ["email", "password"]
+    if not all(field in data for field in required_fields):
+        return jsonify({"error": "Email and password are required"}), 400
+
+    # Check if the user exists and the password is correct
+    manager = Manager.query.filter_by(email=data['email']).first()
+    if not manager or manager.password != data['password']:  # In a real app, you'd hash and verify the password!
+        return jsonify({"error": "Invalid email or password"}), 401
+
+    return jsonify({"message": "Login successful"}), 200
+
 if __name__ == "__main__":
     app.run(debug=True)
