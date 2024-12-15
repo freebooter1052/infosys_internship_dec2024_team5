@@ -1,14 +1,25 @@
 import React, { useState } from "react";
 import "./../styles/ForgotPassword.css";
 import { Link } from "react-router-dom";
+import axios from "axios";
 
 const ForgotPasswordPage = () => {
   const [email, setEmail] = useState("");
 
   const handleGetOTP = (e) => {
     e.preventDefault();
-    console.log("Email entered:", email);
-    alert("OTP sent to your registered email!");
+    axios
+      .post("http://127.0.0.1:5000/api/forgot-password", { email })
+      .then((response) => {
+        alert(response.data.message); // Success message
+      })
+      .catch((error) => {
+        if (error.response) {
+          alert(error.response.data.error); // Error message
+        } else {
+          alert("Something went wrong. Please try again.");
+        }
+      });
   };
 
   return (
@@ -27,11 +38,9 @@ const ForgotPasswordPage = () => {
             required
           />
         </div>
-        <Link to="/forgot-password2">
         <button type="submit" className="forgot-password-button">
           Get OTP
         </button>
-        </Link>
       </form>
     </div>
   );

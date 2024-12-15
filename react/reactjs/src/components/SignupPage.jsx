@@ -1,8 +1,7 @@
-
 import React, { useState } from "react";
 import "./../styles/SignUp.css";
 import { Link } from "react-router-dom";
-
+import axios from "axios";
 const SignupPage = () => {
   const [formData, setFormData] = useState({
     firstName: "",
@@ -20,7 +19,18 @@ const SignupPage = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    console.log("Form Data Submitted:", formData);
+    axios
+      .post("http://127.0.0.1:5000/api/signup", formData)
+      .then((response) => {
+        alert(response.data.message); // Success message
+      })
+      .catch((error) => {
+        if (error.response) {
+          alert(error.response.data.error); // Error message
+        } else {
+          alert("Something went wrong. Please try again.");
+        }
+      });
   };
 
   return (
@@ -89,11 +99,9 @@ const SignupPage = () => {
             <option value="learner">Learner</option>
           </select>
         </div>
-        <Link to="/">
         <button type="submit" className="form-button">
           Create Account
         </button>
-        </Link>
         <p className="form-footer">
           Already have an account?{" "}
           <a href="/" className="form-link">
