@@ -1,7 +1,7 @@
-
 import React, { useState } from "react";
 import "./../styles/SignUp.css";
-import { Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom"; // Import useNavigate
+import axios from "axios";
 
 const SignupPage = () => {
   const [formData, setFormData] = useState({
@@ -13,6 +13,8 @@ const SignupPage = () => {
     role: "",
   });
 
+  const navigate = useNavigate(); // Initialize navigate
+
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData({ ...formData, [name]: value });
@@ -20,7 +22,19 @@ const SignupPage = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    console.log("Form Data Submitted:", formData);
+    axios
+      .post("http://127.0.0.1:5000/api/signup", formData)
+      .then((response) => {
+        alert(response.data.message); // Success message
+        navigate("/"); // Navigate to the login page
+      })
+      .catch((error) => {
+        if (error.response) {
+          alert(error.response.data.error); // Error message
+        } else {
+          alert("Something went wrong. Please try again.");
+        }
+      });
   };
 
   return (
@@ -89,11 +103,9 @@ const SignupPage = () => {
             <option value="learner">Learner</option>
           </select>
         </div>
-        <Link to="/">
         <button type="submit" className="form-button">
           Create Account
         </button>
-        </Link>
         <p className="form-footer">
           Already have an account?{" "}
           <a href="/" className="form-link">
@@ -106,4 +118,3 @@ const SignupPage = () => {
 };
 
 export default SignupPage;
-
