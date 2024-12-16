@@ -13,7 +13,7 @@ const ForgotPasswordPage = () => {
       .post("http://127.0.0.1:5000/api/forgot-password", { email })
       .then((response) => {
         alert(response.data.message); // Success message
-        navigate("/forgot-password2"); // Navigate to the next page
+        navigate("/forgot-password2", { state: { email } }); // Pass email to the next page
       })
       .catch((error) => {
         if (error.response) {

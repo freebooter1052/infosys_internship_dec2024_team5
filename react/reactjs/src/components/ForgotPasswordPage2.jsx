@@ -1,15 +1,31 @@
 import React, { useState } from "react";
+import { useLocation } from "react-router-dom";
+import axios from "axios";
 import "./../styles/ForgotPassword.css";
 
 const ForgotPasswordPage2 = () => {
   const [otp, setOtp] = useState("");
   const [newPassword, setNewPassword] = useState("");
+  const location = useLocation();
+  const email = location.state?.email || ""; // Get email from location state
 
-  const handleResetPassword = (e) => {
+  const handleResetPassword = async (e) => {
     e.preventDefault();
-    console.log("OTP entered:", otp);
-    console.log("New password:", newPassword);
-    alert("Password has been reset successfully!");
+    try {
+      const response = await axios.post("http://127.0.0.1:5000/api/verify-otp", {
+        email: email,
+        otp: otp,
+      });
+      if (response.data.message === "OTP verified successfully") {
+        console.log("OTP verified:", otp);
+        console.log("New password:", newPassword);
+        alert("OTP verified successfully! You can now reset your password.");
+        // Add logic to reset the password
+      }
+    } catch (error) {
+      console.error("Error verifying OTP:", error);
+      alert("Invalid OTP. Please try again.");
+    }
   };
 
   return (
