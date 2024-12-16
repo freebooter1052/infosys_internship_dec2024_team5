@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import "./../styles/ForgotPassword.css";
+import { Link } from "react-router-dom";
 
 const ForgotPasswordPage2 = () => {
   const [otp, setOtp] = useState("");
@@ -31,9 +32,11 @@ const ForgotPasswordPage2 = () => {
             required
           />
         </div>
+        <Link to="/reset-page" >
         <button type="submit" className="forgot-password-button">
           Reset Password
         </button>
+        </Link>
       </form>
     </div>
   );
