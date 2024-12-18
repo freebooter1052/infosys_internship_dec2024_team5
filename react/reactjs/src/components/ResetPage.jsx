@@ -1,8 +1,7 @@
 import React, { useState } from 'react';
-import "../styles/ResetPage.css"
-import { Link } from 'react-router-dom';
+import "../styles/ResetPage.css";
 
-const ResetPage= () => {
+const ResetPage = () => {
   const [newPassword, setNewPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
 
@@ -49,9 +48,7 @@ const ResetPage= () => {
             required
           />
         </div>
-        <Link to="/">
         <button type="submit">Reset Password</button>
-        </Link>
       </form>
     </div>
   );

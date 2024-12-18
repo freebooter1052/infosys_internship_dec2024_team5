@@ -1,13 +1,12 @@
 import React, { useState } from "react";
-import { useLocation } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import axios from "axios";
 import "./../styles/ForgotPassword.css";
-import { Link } from "react-router-dom";
 
 const ForgotPasswordPage2 = () => {
   const [otp, setOtp] = useState("");
-  const [newPassword, setNewPassword] = useState("");
   const location = useLocation();
+  const navigate = useNavigate();
   const email = location.state?.email || ""; // Get email from location state
 
   const handleResetPassword = async (e) => {
@@ -19,9 +18,8 @@ const ForgotPasswordPage2 = () => {
       });
       if (response.data.message === "OTP verified successfully") {
         console.log("OTP verified:", otp);
-        console.log("New password:", newPassword);
         alert("OTP verified successfully! You can now reset your password.");
-        // Add logic to reset the password
+        navigate("/reset-page"); // Ensure this path matches
       }
     } catch (error) {
       console.error("Error verifying OTP:", error);
@@ -48,11 +46,9 @@ const ForgotPasswordPage2 = () => {
             required
           />
         </div>
-        <Link to="/reset-page" >
         <button type="submit" className="forgot-password-button">
           Reset Password
         </button>
-        </Link>
       </form>
     </div>
   );
