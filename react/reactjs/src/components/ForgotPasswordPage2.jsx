@@ -28,7 +28,7 @@ const ForgotPasswordPage2 = () => {
   };
 
   return (
-    <div className="forgot-password-container">
+    <div className="forgot-password-container bg-gradient-to-r from-indigo-500 from-10% via-sky-500 via-30% to-emerald-500 to-90%">
       <form className="forgot-password-form" onSubmit={handleResetPassword}>
         <h2>Forgot Password</h2>
         <p>
