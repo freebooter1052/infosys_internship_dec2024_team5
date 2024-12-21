@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Link, useNavigate } from "react-router-dom"; // Import useNavigate
+import { Link, useNavigate } from "react-router-dom"; 
 import axios from "axios";
 import "./../styles/LoginPage.css";
 
@@ -9,7 +9,7 @@ const LoginPage = () => {
     password: "",
   });
 
-  const navigate = useNavigate(); // Initialize navigate
+  const navigate = useNavigate(); 
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -21,12 +21,12 @@ const LoginPage = () => {
     axios
       .post("http://127.0.0.1:5000/api/login", formData)
       .then((response) => {
-        //alert("Login successful!"); // Display success message
-        navigate("/home"); // Navigate to the home page
+        alert("Login successful!"); 
+        navigate("/home"); 
       })
       .catch((error) => {
         if (error.response) {
-          alert(error.response.data.error); // Error message
+          alert(error.response.data.error);
         } else {
           alert("Something went wrong. Please try again.");
         }

@@ -1,7 +1,18 @@
-import React from 'react';
+import React, { useState } from "react";
 import "../styles/Home.css";
+import CourseCreationForm from "./CourseCreationForm";
 
 const Home = () => {
+  const [isCourseFormVisible, setIsCourseFormVisible] = useState(false);
+
+  const handleShowCourseForm = () => {
+    setIsCourseFormVisible(true);
+  };
+
+  const handleCloseCourseForm = () => {
+    setIsCourseFormVisible(false);
+  };
+
   return (
     <div className="dashboard-container">
       <header className="dashboard-header">
@@ -21,26 +32,33 @@ const Home = () => {
       <main className="dashboard-main">
         <section id="courses">
           <h2>Your Courses</h2>
-          <p>Explore the courses you're enrolled</p>
-          <button onClick={() => alert('Explore Courses!')}>Explore Courses</button>
+          <p>Explore the courses you're enrolled in.</p>
+          <button onClick={() => alert("Explore Courses!")}>Explore Courses</button>
         </section>
 
         <section id="progress">
-          <h2>Your Progress</h2>
-          <p>Track your learning progress and milestones.</p>
-          <button onClick={() => alert('View Progress!')}>View Progress</button>
+          <h2>New Course Creation</h2>
+          <p>Add new courses here:</p>
+
+          {/* Button to open the CourseCreationForm */}
+          <button onClick={handleShowCourseForm}>Create New Course</button>
+
+          {/* Conditionally render the CourseCreationForm */}
+          {isCourseFormVisible && (
+            <CourseCreationForm onClose={handleCloseCourseForm} />
+          )}
         </section>
 
         <section id="community">
           <h2>Community</h2>
           <p>Engage with other learners and share knowledge.</p>
-          <button onClick={() => alert('Join Community!')}>Join Community</button>
+          <button onClick={() => alert("Join Community!")}>Join Community</button>
         </section>
 
         <section id="settings">
           <h2>Settings</h2>
           <p>Customize your preferences and account details.</p>
-          <button onClick={() => alert('Update Settings!')}>Update Settings</button>
+          <button onClick={() => alert("Update Settings!")}>Update Settings</button>
         </section>
       </main>
 

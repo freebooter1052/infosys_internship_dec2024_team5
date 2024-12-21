@@ -16,11 +16,10 @@ function App() {
         <Route path="/forgot-password" element={<ForgotPasswordPage />} />
         <Route path="/forgot-password2" element={<ForgotPasswordPage2 />} />
         <Route path="/home" element={<Home />} />
-        <Route path="/reset-page" element={<ResetPage />} /> {/* Ensure this path matches */}
+        <Route path="/reset-page" element={<ResetPage />} />
       </Routes>
     </Router>
   );
 }
 
 export default App;
-
