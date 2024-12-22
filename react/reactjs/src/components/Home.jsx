@@ -1,6 +1,8 @@
 import React, { useState } from "react";
 import "../styles/Home.css";
-import CourseCreationForm from "./CourseCreationForm";
+import { Link} from "react-router-dom"; 
+import CourseCreationForm from "../components/CourseCreationForm.jsx"
+
 
 const Home = () => {
   const [isCourseFormVisible, setIsCourseFormVisible] = useState(false);
@@ -31,9 +33,11 @@ const Home = () => {
 
       <main className="dashboard-main">
         <section id="courses">
-          <h2>Your Courses</h2>
-          <p>Explore the courses you're enrolled in.</p>
+          <h2>Courses</h2>
+          <p>Explore the available courses</p>
+          <Link to="/Course-page">
           <button onClick={() => alert("Explore Courses!")}>Explore Courses</button>
+          </Link>
         </section>
 
         <section id="progress">
