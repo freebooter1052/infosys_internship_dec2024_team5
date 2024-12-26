@@ -1,12 +1,12 @@
 import React, { useState } from "react";
 import "./../styles/CourseCreationForm.css";
+import axios from "axios";
 
 const CourseCreationForm = ({ onClose }) => {
   const [formData, setFormData] = useState({
     courseId: "",
     courseTitle: "",
     description: "",
-    instructor: "",
     startDate: "",
     endDate: "",
   });
@@ -16,11 +16,23 @@ const CourseCreationForm = ({ onClose }) => {
     setFormData({ ...formData, [name]: value });
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log("Course Data Submitted:", formData);
-    alert("Course created and notifications sent!");
-    onClose(); 
+    try {
+      const response = await axios.post("http://localhost:5000/api/courses", {
+        id: formData.courseId,
+        title: formData.courseTitle,
+        description: formData.description,
+        start_date: formData.startDate,
+        end_date: formData.endDate,
+      });
+      console.log("Course Data Submitted:", response.data);
+      alert("Course created and notifications sent!");
+      onClose();
+    } catch (error) {
+      console.error("There was an error creating the course!", error);
+      alert("Failed to create course. Please try again.");
+    }
   };
 
   return (
@@ -62,8 +74,6 @@ const CourseCreationForm = ({ onClose }) => {
               onChange={handleChange}
               required
             ></textarea>
-          </div>
-          <div className="form-group">
           </div>
           <div className="form-group">
             <label htmlFor="startDate">Start Date</label>

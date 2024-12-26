@@ -1,4 +1,4 @@
-from flask import Blueprint, request, jsonify
+from flask import Blueprint, request, jsonify, session, make_response
 from app.models import db, Manager
 
 auth_blueprint = Blueprint('auth', __name__)
@@ -27,7 +27,9 @@ def signup():
     db.session.add(new_manager)
     db.session.commit()
 
-    return jsonify({"message": "Manager registered successfully"}), 201
+    response = make_response(jsonify({"message": " registered successfully"}), 201)
+    response.headers.add("Access-Control-Allow-Origin", "http://localhost:3000")
+    return response
 
 @auth_blueprint.route('/login', methods=['POST'])
 def login():
@@ -40,4 +42,9 @@ def login():
     if not manager or manager.password != data['password']:
         return jsonify({"error": "Invalid email or password"}), 401
 
-    return jsonify({"message": "Login successful"}), 200
+    # Store the user's email in the session
+    session['user_email'] = manager.email
+
+    response = make_response(jsonify({"message": "Login successful"}), 200)
+    response.headers.add("Access-Control-Allow-Origin", "http://localhost:3000")
+    return response
