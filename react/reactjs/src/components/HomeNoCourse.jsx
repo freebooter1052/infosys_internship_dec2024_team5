@@ -1,32 +1,36 @@
 import React, { useState, useEffect } from "react";
 import "../styles/Home.css";
-import { Link } from "react-router-dom"; 
-import CourseCreationForm from "../components/CourseCreationForm.jsx";
+import { Link } from "react-router-dom";
 
-const Home = () => {
-  const [isCourseFormVisible, setIsCourseFormVisible] = useState(false);
+const HomeNoCourse = () => {
   const [userRole, setUserRole] = useState("");
 
   useEffect(() => {
-    const role = sessionStorage.getItem("user_role");
-    console.log("Home component - Current role:", role); // Debug log
-    if (role) {
-      const lowerRole = role.toLowerCase();
-      setUserRole(lowerRole);
-      // Redirect if not HR or instructor
-      if (lowerRole !== "hr" && lowerRole !== "instructor") {
-        window.location.href = "/home-no-course";
+    // Fetch the user role from the session or API
+    const fetchUserRole = async () => {
+      try {
+        // Assuming the role is stored in session storage
+        const role = sessionStorage.getItem("user_role");
+        if (role) {
+          setUserRole(role);
+        } else {
+          // Fetch from API if not found in session storage
+          const response = await fetch("http://127.0.0.1:5000/api/get-user-role", {
+            credentials: "include"
+          });
+          if (!response.ok) {
+            throw new Error("Network response was not ok");
+          }
+          const data = await response.json();
+          setUserRole(data.role);
+          sessionStorage.setItem("user_role", data.role);
+        }
+      } catch (error) {
+        console.error("Failed to fetch user role:", error);
       }
-    }
+    };
+    fetchUserRole();
   }, []);
-
-  const handleShowCourseForm = () => {
-    setIsCourseFormVisible(true);
-  };
-
-  const handleCloseCourseForm = () => {
-    setIsCourseFormVisible(false);
-  };
 
   return (
     <div className="dashboard-container">
@@ -53,21 +57,6 @@ const Home = () => {
           </Link>
         </section>
 
-        {userRole === "hr" && (
-          <section id="progress">
-            <h2>New Course Creation</h2>
-            <p>Add new courses here:</p>
-
-            {/* Button to open the CourseCreationForm */}
-            <button onClick={handleShowCourseForm}>Create New Course</button>
-
-            {/* Conditionally render the CourseCreationForm */}
-            {isCourseFormVisible && (
-              <CourseCreationForm onClose={handleCloseCourseForm} />
-            )}
-          </section>
-        )}
-
         <section id="community">
           <h2>Community</h2>
           <p>Engage with other learners and share knowledge.</p>
@@ -88,4 +77,4 @@ const Home = () => {
   );
 };
 
-export default Home;
+export default HomeNoCourse;
