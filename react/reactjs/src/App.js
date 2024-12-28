@@ -8,6 +8,7 @@ import Home from "./components/Home";
 import ResetPage from "./components/ResetPage";
 import CoursePage from "./components/CoursePage";
 import HomeNoCourse from "./components/HomeNoCourse";
+import AdminEditSuite from "./components/AdminEditSuite";
 
 function App() {
   const [userRole, setUserRole] = useState(null);
@@ -48,6 +49,7 @@ function App() {
         />
         <Route path="/reset-page" element={<ResetPage />} />
         <Route path="/Course-page" element={<CoursePage />} />
+        <Route path="/admin-edit" element={<AdminEditSuite />} />
       </Routes>
     </Router>
   );

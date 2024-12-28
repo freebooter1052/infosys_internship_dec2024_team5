@@ -49,7 +49,7 @@ const Home = () => {
           <h2>Courses</h2>
           <p>Explore the available courses</p>
           <Link to="/Course-page">
-          <button onClick={() => alert("Explore Courses!")}>Explore Courses</button>
+          <button onClick={() => alert("Explore Courses!")}>Course Overview</button>
           </Link>
         </section>
 
@@ -75,9 +75,11 @@ const Home = () => {
         </section>
 
         <section id="settings">
-          <h2>Settings</h2>
-          <p>Customize your preferences and account details.</p>
-          <button onClick={() => alert("Update Settings!")}>Update Settings</button>
+          <h2>Admin Edit</h2>
+          <p>Edit the information aboutcourses</p>
+          <Link to="/admin-edit">
+          <button onClick={() => alert("Update Settings!")}>Admin edit</button>
+          </Link>
         </section>
       </main>
 
