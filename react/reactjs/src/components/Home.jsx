@@ -53,7 +53,7 @@ const Home = () => {
           </Link>
         </section>
 
-        {userRole === "hr" && (
+        {(userRole === "hr" || userRole === "instructor") && (
           <section id="progress">
             <h2>New Course Creation</h2>
             <p>Add new courses here:</p>
@@ -68,11 +68,13 @@ const Home = () => {
           </section>
         )}
 
-        <section id="community">
-          <h2>Community</h2>
-          <p>Engage with other learners and share knowledge.</p>
-          <button onClick={() => alert("Join Community!")}>Join Community</button>
-        </section>
+        {userRole === "hr" && (
+          <section id="requests">
+            <h2>Requests</h2>
+            <p>permit manager requests</p>
+            <button onClick={() => alert("requests!")}>View Requests</button>
+          </section>
+        )}
 
         <section id="settings">
           <h2>Admin Edit</h2>
