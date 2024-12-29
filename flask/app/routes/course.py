@@ -48,6 +48,7 @@ def register_course():
 
     response = make_response(jsonify({'message': 'Course registered successfully'}), 201)
     response.headers.add("Access-Control-Allow-Origin", "http://localhost:3000")
+    response.headers.add("Access-Control-Allow-Credentials", "true")
     return response
 
 @course_blueprint.route('/courses', methods=['GET'])
@@ -62,6 +63,48 @@ def get_courses():
     } for course in courses]
     response = make_response(jsonify(courses_list))
     response.headers.add("Access-Control-Allow-Origin", "http://localhost:3000")
+    response.headers.add("Access-Control-Allow-Credentials", "true")
+    return response
+
+@course_blueprint.route('/courses/<int:course_id>', methods=['PUT', 'OPTIONS'])
+def update_course(course_id):
+    if request.method == 'OPTIONS':
+        response = make_response()
+        response.headers.add('Access-Control-Allow-Origin', 'http://localhost:3000')
+        response.headers.add('Access-Control-Allow-Headers', 'Content-Type, User-Role')
+        response.headers.add('Access-Control-Allow-Methods', 'PUT')
+        response.headers.add('Access-Control-Allow-Credentials', 'true')
+        return response
+
+    logging.info(f"Session data: {session}")
+    logging.info(f"User role from session: {session.get('user_role')}")
+    
+    try:
+        data = request.get_json()
+        logging.info(f"Received update data for course {course_id}: {data}")
+    except Exception as e:
+        logging.error(f"Failed to decode JSON object: {e}")
+        return jsonify({'error': 'Invalid JSON data'}), 400
+
+    if not data:
+        logging.error('No data provided for update')
+        return jsonify({'error': 'No data provided'}), 400
+
+    course = Course.query.get(course_id)
+    if not course:
+        logging.error(f"Course with ID {course_id} not found")
+        return jsonify({'error': 'Course not found'}), 404
+
+    course.title = data.get('title', course.title)
+    course.description = data.get('description', course.description)
+    course.start_date = datetime.strptime(data.get('start_date', course.start_date.strftime('%Y-%m-%d')), '%Y-%m-%d').date()
+    course.end_date = datetime.strptime(data.get('end_date', course.end_date.strftime('%Y-%m-%d')), '%Y-%m-%d').date()
+
+    db.session.commit()
+    logging.info(f"Course {course_id} updated successfully")
+    response = jsonify({'message': 'Course updated successfully'})
+    response.headers.add("Access-Control-Allow-Origin", "http://localhost:3000")
+    response.headers.add("Access-Control-Allow-Credentials", "true")
     return response
 
 def send_course_notification(course, recipient_email):

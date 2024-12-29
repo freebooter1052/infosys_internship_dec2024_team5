@@ -38,7 +38,7 @@ def forgot_password():
 
     otp = random.randint(100000, 999999)
     otp_storage[data['email']] = otp
-
+#utils.py
     send_otp(manager.email, otp)
     response = jsonify({"message": "OTP sent to your registered email"})
     response.headers.add("Access-Control-Allow-Origin", "*")
