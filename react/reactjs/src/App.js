@@ -30,7 +30,7 @@ function App() {
     }
 
     if (role.toLowerCase() === "hr" || role.toLowerCase() === "instructor") {
-      return <Home />;
+      return children;
     }
 
     return <HomeNoCourse />;
@@ -45,7 +45,7 @@ function App() {
         <Route path="/forgot-password2" element={<ForgotPasswordPage2 />} />
         <Route 
           path="/home" 
-          element={<ProtectedRoute />} 
+          element={<ProtectedRoute><Home /></ProtectedRoute>} 
         />
         <Route path="/reset-page" element={<ResetPage />} />
         <Route path="/Course-page" element={<CoursePage />} />
