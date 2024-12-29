@@ -1,12 +1,27 @@
-
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
+import { useNavigate } from 'react-router-dom';
 import "../styles/AdminEditSuite.css";
 
+// Configure axios to include credentials
+axios.defaults.withCredentials = true;
+
 const AdminEditSuite = () => {
+  const navigate = useNavigate();
+  const [userRole, setUserRole] = useState('');
   const [courses, setCourses] = useState([]);
   const [editCourse, setEditCourse] = useState(null);
   const [auditTrail, setAuditTrail] = useState([]);
+
+  // Add session check
+  useEffect(() => {
+    const role = sessionStorage.getItem('user_role');
+    if (!role || (role.toLowerCase() !== 'hr' && role.toLowerCase() !== 'instructor')) {
+      navigate('/');
+      return;
+    }
+    setUserRole(role.toLowerCase());
+  }, [navigate]);
 
   // Fetch courses and audit trail when the component mounts
   useEffect(() => {
@@ -34,23 +49,46 @@ const AdminEditSuite = () => {
     }
   };
 
+  const formatDate = (dateString) => {
+    const date = new Date(dateString);
+    const year = date.getFullYear();
+    const month = String(date.getMonth() + 1).padStart(2, '0');
+    const day = String(date.getDate()).padStart(2, '0');
+    return `${year}-${month}-${day}`;
+  };
+
   const handleEditCourse = (courseId) => {
     const course = courses.find(c => c.id === courseId);
-    setEditCourse(course);
+    setEditCourse({
+      ...course,
+      start_date: formatDate(course.start_date),
+      end_date: formatDate(course.end_date)
+    });
   };
 
   const handleUpdateCourse = async () => {
     if (editCourse) {
       try {
-        await axios.put(`http://localhost:5000/api/courses/${editCourse.id}`, editCourse);
+        const response = await axios.put(
+          `http://localhost:5000/api/courses/${editCourse.id}`, 
+          editCourse,
+          {
+            headers: {
+              'Content-Type': 'application/json',
+              'User-Role': userRole
+            },
+            withCredentials: true
+          }
+        );
+        console.log("Update response:", response.data);
         alert('Course updated successfully');
-        // Refetch courses and audit trail to reflect updates
-        fetchCourses(); // Ensure courses are refetched
-        fetchAuditTrail(); // Ensure audit trail is updated
-        logAudit('Updated course: ' + editCourse.title); // Log the audit entry
-        setEditCourse(null); // Reset after update
+        fetchCourses();
+        fetchAuditTrail();
+        logAudit('Updated course: ' + editCourse.title);
+        setEditCourse(null);
       } catch (error) {
-        console.error('Error updating course:', error);
+        console.error('Error updating course:', error.response?.data || error.message);
+        alert(error.response?.data?.error || 'Failed to update course');
       }
     }
   };
@@ -107,18 +145,6 @@ const AdminEditSuite = () => {
               value={editCourse.end_date}
               onChange={(e) => setEditCourse({ ...editCourse, end_date: e.target.value })}
             />
-          </label>
-
-          <label>
-            Module Status:
-            <select
-              value={editCourse.module_status}
-              onChange={(e) => setEditCourse({ ...editCourse, module_status: e.target.value })}
-            >
-              <option value="Active">Active</option>
-              <option value="Inactive">Inactive</option>
-              <option value="Pending">Pending</option>
-            </select>
           </label>
 
           <button onClick={handleUpdateCourse} className="update-button">Update Course</button>
