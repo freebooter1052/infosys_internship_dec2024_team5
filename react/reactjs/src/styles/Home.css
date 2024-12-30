@@ -43,7 +43,8 @@ body {
   
   /* Navigation bar */
   .dashboard-nav {
-    background-color: #333;
+    background-color:hwb(211 0% 0%);
+    color: hwb(211 0% 0%);
   }
   
   .dashboard-nav ul {
@@ -59,7 +60,7 @@ body {
   }
   
   .dashboard-nav a {
-    color: white;
+    color: rgb(14, 81, 168);
     font-size: 1rem;
     font-weight: bold;
   }

@@ -48,7 +48,7 @@ const Home = () => {
         <section id="courses">
           <h2>Courses</h2>
           <p>Explore the available courses</p>
-          <Link to="/Course-page">
+          <Link to="/Course-page2">
           <button onClick={() => alert("Explore Courses!")}>Course Overview</button>
           </Link>
         </section>
@@ -71,6 +71,7 @@ const Home = () => {
         <section id="community">
           <h2>Community</h2>
           <p>Engage with other learners and share knowledge.</p>
+
           <button onClick={() => alert("Join Community!")}>Join Community</button>
         </section>
 

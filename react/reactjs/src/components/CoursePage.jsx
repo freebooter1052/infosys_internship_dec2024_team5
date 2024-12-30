@@ -143,7 +143,7 @@ const CoursePage = () => {
 
       {selectedCourse && (
         <div className="course-details-modal">
-          <h2>{selectedCourse.title}</h2>
+          <b><h2>{selectedCourse.title}</h2></b>
           <p>Instructor: {selectedCourse.instructor}</p>
           <p>
             Creation Date: {new Date(selectedCourse.creation_date).toLocaleDateString()}
@@ -152,7 +152,7 @@ const CoursePage = () => {
             Duration: {getDuration(selectedCourse.start_date, selectedCourse.end_date)}
           </p>
           <p>Description: {selectedCourse.description}</p>
-          <button onClick={() => setSelectedCourse(null)}>Close</button>
+          <button className='closebutton' onClick={() => setSelectedCourse(null)}>Close</button>
         </div>
       )}
     </div>

@@ -4,7 +4,6 @@
   left: 0;
   width: 100%;
   height: 100%;
-  background: rgba(0, 0, 0, 0.5);
   display: flex;
   justify-content: center;
   align-items: center;
@@ -17,10 +16,12 @@
   width: 80%;
   max-width: 600px;
   border-radius: 10px;
-  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+  box-shadow: 0 5px 15px;
   animation: slideDown 0.4s ease;
 }
-
+.closebutton{
+  background-color: #f44336;
+}
 .details-title {
   font-size: 24px;
   margin-bottom: 10px;

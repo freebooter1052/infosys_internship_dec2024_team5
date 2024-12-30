@@ -1,153 +1,176 @@
-* {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
-}
-
+/* General Styles */
 body {
   font-family: 'Arial', sans-serif;
-  background-color: #f4f4f9;
+  margin: 0;
+  padding: 0;
+  background-color: #f8f9fa; /* Light background for clarity */
   color: #333;
 }
 
 /* Page Container */
 .admin-edit-page {
-  max-width: 1200px;
-  margin: 40px auto;
   padding: 20px;
-  background-color: white;
-  border-radius: 8px;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
 
 .title {
+  font-size: 2rem;
+  color: #007bff; /* Blue color for the title */
+  margin-bottom: 20px;
   text-align: center;
-  font-size: 2.5rem;
-  color: #3f51b5;
-  margin-bottom: 40px;
 }
 
-/* Course List */
+/* Courses List */
 .courses-list {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+  display: flex;
+  flex-wrap: wrap;
   gap: 20px;
+  justify-content: center;
 }
 
 .course-card {
-  background-color: #fff;
-  padding: 20px;
+  background: #fff;
+  border: 1px solid #ddd;
   border-radius: 8px;
-  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-  transition: all 0.3s ease;
+  padding: 15px;
+  width: 250px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  text-align: center;
+  transition: transform 0.3s, box-shadow 0.3s;
 }
 
 .course-card:hover {
   transform: translateY(-5px);
+  box-shadow: 0 8px 12px rgba(0, 0, 0, 0.15);
 }
 
 .course-title {
-  font-size: 1.5rem;
-  color: #3f51b5;
+  font-size: 1.3rem;
+  color: #007bff; /* Blue color for course titles */
   margin-bottom: 10px;
 }
 
 .edit-button {
-  padding: 10px 20px;
-  background-color: #4caf50;
-  color: white;
+  background-color: #28a745;
+  color: #fff;
   border: none;
   border-radius: 5px;
+  padding: 8px 12px;
   cursor: pointer;
-  transition: background-color 0.3s ease;
+  font-size: 0.9rem;
+  transition: background-color 0.3s, transform 0.2s;
 }
 
 .edit-button:hover {
-  background-color: #45a049;
+  background-color: #218838;
+  transform: translateY(-2px);
 }
 
 /* Edit Form */
 .edit-form {
-  margin-top: 40px;
-  padding: 30px;
-  background-color: #f9f9f9;
+  margin: 30px auto;
+  padding: 20px;
+  max-width: 600px;
+  background: #fff;
+  border: 1px solid #ddd;
   border-radius: 8px;
-  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
 
 .edit-form h2 {
-  font-size: 2rem;
-  color: #333;
+  font-size: 1.5rem;
+  color: #007bff;
   margin-bottom: 20px;
 }
 
-label {
-  font-size: 1rem;
-  color: #666;
-  margin-bottom: 10px;
+.edit-form label {
   display: block;
+  font-size: 1rem;
+  color: #555;
+  margin-bottom: 10px;
 }
 
-textarea, input, select {
+.edit-form input,
+.edit-form textarea,
+.edit-form select {
   width: 100%;
   padding: 10px;
-  margin: 10px 0 20px;
-  border: 1px solid #ddd;
+  margin-bottom: 20px;
+  border: 1px solid #ccc;
   border-radius: 5px;
-  font-size: 1rem;
-  background-color: #fff;
-  transition: border-color 0.3s ease;
+  font-size: 0.9rem;
 }
 
-textarea:focus, input:focus, select:focus {
-  border-color: #3f51b5;
+.edit-form textarea {
+  resize: vertical;
+  min-height: 100px;
 }
 
 .update-button {
-  padding: 12px 25px;
-  background-color: #3f51b5;
-  color: white;
+  background-color: #007bff;
+  color: #fff;
   border: none;
   border-radius: 5px;
+  padding: 10px 15px;
   cursor: pointer;
-  transition: background-color 0.3s ease;
-  font-size: 1.2rem;
+  font-size: 1rem;
+  transition: background-color 0.3s, transform 0.2s;
 }
 
 .update-button:hover {
-  background-color: #303f9f;
+  background-color: #0056b3;
+  transform: translateY(-2px);
 }
 
 /* Audit Trail */
 .audit-trail {
-  margin-top: 40px;
+  margin-top: 30px;
+  padding: 15px;
+  background: #fff;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  max-width: 800px;
+  margin-left: auto;
+  margin-right: auto;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.audit-trail h2 {
+  font-size: 1.3rem;
+  color: #007bff;
+  margin-bottom: 10px;
 }
 
 .audit-entry {
-  background-color: #fff;
-  padding: 15px;
-  border-radius: 5px;
-  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
-  margin-bottom: 15px;
-  font-size: 1rem;
+  padding: 10px 0;
+  border-bottom: 1px solid #eee;
+}
+
+.audit-entry:last-child {
+  border-bottom: none;
 }
 
 .audit-entry p {
-  color: #666;
   margin: 0;
+  font-size: 0.9rem;
+  color: #555;
 }
 
-/* Responsive Styles */
+/* Responsive Design */
 @media (max-width: 768px) {
   .courses-list {
-    grid-template-columns: 1fr;
+    flex-direction: column;
+    align-items: center;
   }
 
   .course-card {
-    padding: 15px;
+    width: 90%;
   }
 
   .edit-form {
-    padding: 20px;
+    width: 90%;
+  }
+
+  .audit-trail {
+    width: 90%;
   }
 }

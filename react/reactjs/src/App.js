@@ -9,6 +9,7 @@ import ResetPage from "./components/ResetPage";
 import CoursePage from "./components/CoursePage";
 import HomeNoCourse from "./components/HomeNoCourse";
 import AdminEditSuite from "./components/AdminEditSuite";
+import CoursePage2 from "./components/CoursePage2";
 
 function App() {
   const [userRole, setUserRole] = useState(null);
@@ -50,6 +51,7 @@ function App() {
         <Route path="/reset-page" element={<ResetPage />} />
         <Route path="/Course-page" element={<CoursePage />} />
         <Route path="/admin-edit" element={<AdminEditSuite />} />
+        <Route path="/Course-page2" element={<CoursePage2/>}/>
       </Routes>
     </Router>
   );
