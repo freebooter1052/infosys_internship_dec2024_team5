@@ -68,7 +68,7 @@ def login():
     response.headers.add("Access-Control-Allow-Origin", "http://localhost:3000")
     response.headers.add("Access-Control-Allow-Credentials", "true")
     return response
-
+'''
 @auth_blueprint.route('/get-user-role', methods=['GET', 'OPTIONS'])
 @cross_origin(supports_credentials=True)
 def get_user_role():
@@ -89,6 +89,6 @@ def get_user_role():
     response.headers.add("Access-Control-Allow-Origin", "http://localhost:3000")
     response.headers.add("Access-Control-Allow-Credentials", "true")
     return response
-
+'''
 
 
