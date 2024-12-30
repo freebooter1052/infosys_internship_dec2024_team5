@@ -125,7 +125,7 @@ const AdminEditSuite = () => {
         </div>
       )}
 
-      <h2>Audit Trail</h2>
+      
       <div className="audit-trail">
         {auditTrail.map((entry, index) => (
           <div key={index} className="audit-entry">

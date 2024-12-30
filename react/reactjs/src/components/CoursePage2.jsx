@@ -7,7 +7,7 @@ const CoursePage2 = () => {
   const [showParticipants, setShowParticipants] = useState(false);
 
   useEffect(() => {
-    // Mock courses data
+    // Mock data
     const mockCourses = [
       {
         id: 1,
@@ -79,7 +79,6 @@ const CoursePage2 = () => {
     <div className="courses-page">
       <h1 className="title">Courses Overview</h1>
 
-      {/* Courses List */}
       <div className="courses-list">
         {courses.map((course) => (
           <div key={course.id} className="course-card">
@@ -100,8 +99,6 @@ const CoursePage2 = () => {
           </div>
         ))}
       </div>
-
-      {/* Course Details Modal */}
       {selectedCourse && (
         <div className="course-details-modal">
           {!showParticipants ? (

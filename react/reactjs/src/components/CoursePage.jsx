@@ -10,7 +10,7 @@ const CoursePage = () => {
   });
   const [message, setMessage] = useState('');
   const [selectedCourse, setSelectedCourse] = useState(null);
-  const [filter, setFilter] = useState("All Courses"); // Active filter
+  const [filter, setFilter] = useState("All Courses"); 
 
   useEffect(() => {
     const fetchCourses = async () => {
