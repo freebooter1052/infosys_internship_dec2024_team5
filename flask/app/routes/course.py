@@ -3,11 +3,13 @@ from app import db, mail
 from app.models import Course
 from datetime import datetime
 from flask_mail import Message
+from app.utils import retry_on_db_lock
 import logging
 
 course_blueprint = Blueprint('course', __name__)
 
 @course_blueprint.route('/courses', methods=['POST'])
+@retry_on_db_lock()
 def register_course():
     try:
         logging.info(f"Raw request data: {request.data}")
@@ -52,6 +54,7 @@ def register_course():
     return response
 
 @course_blueprint.route('/courses', methods=['GET'])
+@retry_on_db_lock()
 def get_courses():
     courses = Course.query.all()
     courses_list = [{
@@ -67,6 +70,7 @@ def get_courses():
     return response
 
 @course_blueprint.route('/courses/<int:course_id>', methods=['PUT', 'OPTIONS'])
+@retry_on_db_lock()
 def update_course(course_id):
     if request.method == 'OPTIONS':
         response = make_response()
@@ -100,7 +104,13 @@ def update_course(course_id):
     course.start_date = datetime.strptime(data.get('start_date', course.start_date.strftime('%Y-%m-%d')), '%Y-%m-%d').date()
     course.end_date = datetime.strptime(data.get('end_date', course.end_date.strftime('%Y-%m-%d')), '%Y-%m-%d').date()
 
-    db.session.commit()
+    try:
+        db.session.commit()
+    except Exception as e:
+        db.session.rollback()
+        logging.error(f"Error updating course: {e}")
+        return jsonify({'error': str(e)}), 500
+
     logging.info(f"Course {course_id} updated successfully")
     response = jsonify({'message': 'Course updated successfully'})
     response.headers.add("Access-Control-Allow-Origin", "http://localhost:3000")

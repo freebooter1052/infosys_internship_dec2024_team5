@@ -21,7 +21,6 @@ def create_app():
          resources={
              r"/api/*": {
                  "origins": ["http://localhost:3000"],
-                 "allow_credentials": True,
                  "methods": ["GET", "POST", "PUT", "OPTIONS"],
                  "allow_headers": ["Content-Type"],
                  "expose_headers": ["Set-Cookie"]

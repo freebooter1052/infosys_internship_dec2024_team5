@@ -2,11 +2,13 @@ from flask import Blueprint, request, jsonify
 from app import db
 from app.models import AuditTrail
 from datetime import datetime
+from app.utils import retry_on_db_lock
 import logging
 
 audit_blueprint = Blueprint('audit', __name__)
 
 @audit_blueprint.route('/audit-trail', methods=['GET'])
+@retry_on_db_lock()
 def get_audit_trail():
     try:
         audit_trail = AuditTrail.query.all()
@@ -24,6 +26,7 @@ def get_audit_trail():
         return jsonify({'error': 'Failed to fetch audit trail'}), 500
 
 @audit_blueprint.route('/audit-trail', methods=['POST'])
+@retry_on_db_lock()
 def log_audit():
     try:
         data = request.get_json()
@@ -39,5 +42,6 @@ def log_audit():
         response.headers.add("Access-Control-Allow-Credentials", "true")
         return response, 201
     except Exception as e:
+        db.session.rollback()
         logging.error(f"Error logging audit entry: {e}")
         return jsonify({'error': 'Failed to log audit entry'}), 500
