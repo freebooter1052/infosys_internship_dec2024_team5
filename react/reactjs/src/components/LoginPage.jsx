@@ -6,7 +6,7 @@ const LoginPage = () => {
   const [formData, setFormData] = useState({
     email: "",
     password: "",
-    role: "user" // default role
+    role: "learner" // default role
   });
 
   const navigate = useNavigate(); 
@@ -18,8 +18,12 @@ const LoginPage = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
+    const dataToSubmit = { ...formData };
+    if (dataToSubmit.role === "user") {
+      dataToSubmit.role = "learner";
+    }
     axios
-      .post("http://127.0.0.1:5000/api/login", formData, {
+      .post("http://127.0.0.1:5000/api/login", dataToSubmit, {
         withCredentials: true
       })
       .then((response) => {
@@ -81,10 +85,11 @@ const LoginPage = () => {
               required
               className="w-full p-2 border rounded-md mt-1"
             >
-              <option value="user">User</option>
+              <option value="learner">Learner</option>
               <option value="hr">HR</option>
               <option value="instructor">Instructor</option>
               <option value="manager">Manager</option>
+              <option value="user">User</option> {/* This will be converted to 'learner' */}
             </select>
           </div>
     

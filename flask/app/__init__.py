@@ -48,11 +48,13 @@ def create_app():
     from app.routes.password import password_blueprint
     from app.routes.course import course_blueprint
     from app.routes.audit import audit_blueprint
+    from app.routes.enrollment import enrollment_blueprint
 
     app.register_blueprint(auth_blueprint, url_prefix='/api')
     app.register_blueprint(password_blueprint, url_prefix='/api')
     app.register_blueprint(course_blueprint, url_prefix='/api')
     app.register_blueprint(audit_blueprint, url_prefix='/api')
+    app.register_blueprint(enrollment_blueprint, url_prefix='/api')
 
     with app.app_context():
         db.create_all()

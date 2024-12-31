@@ -123,13 +123,15 @@ const CoursePage = () => {
             <p className="course-enrollment-status">
               Enrollment Status: {getEnrollmentStatus(course.id)}
             </p>
-            {getEnrollmentStatus(course.id) === 'Not Enrolled' && (
+            {getEnrollmentStatus(course.id) === 'Not Enrolled' ? (
               <button
                 className="enroll-button"
                 onClick={() => handleEnroll(course.id, course.title)}
               >
                 Enroll
               </button>
+            ) : (
+              <p className="enrollment-status">Enrolled</p>
             )}
             <button
               className="view-details-button"

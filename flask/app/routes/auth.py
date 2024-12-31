@@ -19,12 +19,16 @@ def signup():
     if existing_manager:
         return jsonify({"error": "Email already registered"}), 400
 
+    role = data['role'].lower()
+    if role == 'user':
+        role = 'learner'
+
     new_manager = Manager(
         first_name=data['firstName'],
         last_name=data['lastName'],
         email=data['email'],
         password=data['password'],
-        role=data['role']
+        role=role
     )
     db.session.add(new_manager)
     db.session.commit()
@@ -52,7 +56,12 @@ def login():
         return jsonify({"error": "Invalid email"}), 401
     if manager.password != data['password']:
         return jsonify({"error": "Invalid password"}), 401
-    if manager.role.lower() != data['role'].lower():
+
+    role = data['role'].lower()
+    if role == 'user':
+        role = 'learner'
+
+    if manager.role.lower() != role:
         return jsonify({"error": "Invalid role"}), 401
 
     # Store the user's email and role in the session
@@ -68,27 +77,5 @@ def login():
     response.headers.add("Access-Control-Allow-Origin", "http://localhost:3000")
     response.headers.add("Access-Control-Allow-Credentials", "true")
     return response
-'''
-@auth_blueprint.route('/get-user-role', methods=['GET', 'OPTIONS'])
-@cross_origin(supports_credentials=True)
-def get_user_role():
-    if request.method == 'OPTIONS':
-        response = make_response()
-        response.headers.add('Access-Control-Allow-Origin', 'http://localhost:3000')
-        response.headers.add('Access-Control-Allow-Headers', 'Content-Type')
-        response.headers.add('Access-Control-Allow-Methods', 'GET')
-        response.headers.add('Access-Control-Allow-Credentials', 'true')
-        return response
-
-    user_role = session.get('user_role')
-    if user_role:
-        response = make_response(jsonify({"role": user_role.lower()}), 200)
-    else:
-        response = make_response(jsonify({"error": "User role not found"}), 404)
-    
-    response.headers.add("Access-Control-Allow-Origin", "http://localhost:3000")
-    response.headers.add("Access-Control-Allow-Credentials", "true")
-    return response
-'''
 
 
