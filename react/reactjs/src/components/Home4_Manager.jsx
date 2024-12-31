@@ -36,24 +36,41 @@ const Home = () => {
       </header>
 
       <nav className="dashboard-nav">
-        <h1> User Dashboard</h1>
+        <h1> Manager Dashboard</h1>
        </nav>
 
       <main className="dashboard-main">
         <section id="courses">
           <h2>Courses</h2>
           <p>Explore the available courses</p>
-          <Link to="/Course-page">
+          <Link to="/Course-page2">
           <button onClick={() => alert("Explore Courses!")}>Course Overview</button>
           </Link>
         </section>
 
-        <section id="community">
-          <h2>Community</h2>
-          <p>Engage with other learners and share knowledge.</p>
-          <button onClick={() => alert("Join Community!")}>Join Community</button>
-        </section>
+        {userRole === "hr" && (
+          <section id="progress">
+            <h2>New Course Creation</h2>
+            <p>Add new courses here:</p>
 
+            {/* Button to open the CourseCreationForm */}
+            <button onClick={handleShowCourseForm}>Create New Course</button>
+
+            {/* Conditionally render the CourseCreationForm */}
+            {isCourseFormVisible && (
+              <CourseCreationForm onClose={handleCloseCourseForm} />
+            )}
+          </section>
+        )}
+
+
+        <section id="settings">
+          <h2>Manage Requests</h2>
+          <p>Approve or reject user requests</p>
+          <Link to="/approve">
+          <button onClick={() => alert("Update Settings!")}>Manager Requests</button>
+          </Link>
+        </section>
       </main>
 
       <footer className="dashboard-footer">

@@ -1,0 +1,79 @@
+.pending-approvals-container {
+    display:flexbox;
+    margin-top: 200px;
+    margin-left: 650px;
+    min-height: 200vh;
+    min-width: 700px;
+    background-color: #ffffff;
+    font-family: Arial, sans-serif;
+  }
+  
+  /* Card Styling */
+  .card {
+    background-color: #b8cacd;
+    padding: 20px 30px;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    width: 500px;
+    min-height: 500px;
+    text-align: center;
+  }
+  
+  .title {
+    font-size: 1.5rem;
+    font-weight: bold;
+    margin-bottom: 15px;
+    color: #000;
+  }
+  
+  /* User Row */
+  .user-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin: 10px 0;
+  }
+  
+  .user-email {
+    font-size: 0.9rem;
+    color: #333333;
+  }
+  
+  /* Buttons */
+  .buttons {
+    display: flex;
+    gap: 8px;
+  }
+  
+  .approve-button,
+  .reject-button {
+    border: none;
+    padding: 2px;
+    height: 3rem;
+    min-width: 100px;
+    font-size: 0.9rem;
+    color: #ffffff;
+    cursor: pointer;
+    border-radius: 4px;
+  }
+  
+  .approve-button {
+    background-color: #28a745; /* Green */
+    min-width: 100px;
+    height: 3rem;
+  }
+  
+  .reject-button {
+    min-width: 100px;
+    background-color: #dc3545; /* Red */
+  }
+  
+  .approve-button:hover {
+    min-width: 100px;
+    background-color: #218838;
+  }
+  
+  .reject-button:hover {
+    background-color: #c82333;
+    min-width: 100px;
+  }
