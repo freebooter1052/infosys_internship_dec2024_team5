@@ -13,9 +13,9 @@ const Home = () => {
     if (role) {
       const lowerRole = role.toLowerCase();
       setUserRole(lowerRole);
-      // Redirect if not HR or instructor
-      if (lowerRole !== "hr" && lowerRole !== "instructor") {
-        window.location.href = "/home-no-course";
+      // Redirect if not HR, instructor, user, or manager
+      if (lowerRole !== "hr" && lowerRole !== "instructor" && lowerRole !== "user" && lowerRole !== "manager") {
+        window.location.href = "/";
       }
     }
   }, []);
@@ -63,14 +63,8 @@ const Home = () => {
           </section>
         )}
 
-
-        <section id="settings">
-          <h2>Manage Requests</h2>
-          <p>Approve or reject user requests</p>
-          <Link to="/approve">
-          <button onClick={() => alert("Update Settings!")}>Manager Requests</button>
-          </Link>
-        </section>
+       
+        
       </main>
 
       <footer className="dashboard-footer">

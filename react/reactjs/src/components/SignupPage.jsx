@@ -103,7 +103,7 @@ const SignupPage = () => {
         <option value="hr">HR</option>
         <option value="instructor">Instructor</option>
         <option value="manager">Manager</option>
-        <option value="learner">Learner</option>
+        <option value="user">Learner</option>
       </select>
     </div>
     <button

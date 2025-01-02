@@ -13,9 +13,9 @@ const Home = () => {
     if (role) {
       const lowerRole = role.toLowerCase();
       setUserRole(lowerRole);
-      // Redirect if not HR or instructor
-      if (lowerRole !== "hr" && lowerRole !== "instructor") {
-        window.location.href = "/home-no-course";
+      // Redirect if not HR, instructor, user, or manager
+      if (lowerRole !== "hr" && lowerRole !== "instructor" && lowerRole !== "user" && lowerRole !== "manager") {
+        window.location.href = "/";
       }
     }
   }, []);
@@ -65,9 +65,17 @@ const Home = () => {
 
         <section id="settings">
           <h2>Admin Edit</h2>
-          <p>Edit the information aboutcourses</p>
+          <p>Edit the information about courses</p>
           <Link to="/admin-edit">
           <button onClick={() => alert("Update Settings!")}>Admin edit</button>
+          </Link>
+        </section>
+
+        <section id="setting">
+          <h2>Manage Requests</h2>
+          <p>Approve or reject user requests</p>
+          <Link to="/approve">
+          <button onClick={() => alert("Update Settings!")}>Manager Requests</button>
           </Link>
         </section>
       </main>

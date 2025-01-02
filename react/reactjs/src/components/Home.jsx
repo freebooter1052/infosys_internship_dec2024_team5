@@ -13,8 +13,8 @@ const Home = () => {
     if (role) {
       const lowerRole = role.toLowerCase();
       setUserRole(lowerRole);
-      // Redirect if not HR or instructor
-      if (lowerRole !== "hr" && lowerRole !== "instructor") {
+      // Update role check to use learner
+      if (lowerRole !== "hr" && lowerRole !== "instructor" && lowerRole !== "user") {
         window.location.href = "/home-no-course";
       }
     }
@@ -36,8 +36,8 @@ const Home = () => {
       </header>
 
       <nav className="dashboard-nav">
-        <h1> User Dashboard</h1>
-       </nav>
+        <h1>User Dashboard</h1>
+      </nav>
 
       <main className="dashboard-main">
         <section id="courses">
