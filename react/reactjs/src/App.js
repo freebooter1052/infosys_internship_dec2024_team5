@@ -7,13 +7,12 @@ import ForgotPasswordPage2 from "./components/ForgotPasswordPage2";
 import Home from "./components/Home";
 import ResetPage from "./components/ResetPage";
 import CoursePage from "./components/CoursePage";
-import HomeNoCourse from "./components/HomeNoCourse";
 import AdminEditSuite from "./components/AdminEditSuite";
 import CoursePage2 from "./components/CoursePage2";
 import Approve from "./components/Approve";
-import Home2 from "./components/Home2_HR"
-import Home3 from "./components/Home3_Instructor"
-import Home4 from "./components/Home4_Manager"
+import Home2 from "./components/Home2_HR";
+import Home3 from "./components/Home3_Instructor";
+import Home4 from "./components/Home4_Manager";
 
 function App() {
   const [userRole, setUserRole] = useState(null);
@@ -27,18 +26,27 @@ function App() {
   }, []);
 
   const ProtectedRoute = ({ children }) => {
-    const role = sessionStorage.getItem("user_role");
+    let role = sessionStorage.getItem("user_role");
     console.log("Protected Route - Current role:", role); // Debug log
 
     if (!role) {
       return <Navigate to="/" />;
     }
 
-    if (role.toLowerCase() === "hr" || role.toLowerCase() === "instructor") {
-      return children;
-    }
+    role = role.toLowerCase();
 
-    return <HomeNoCourse />;
+    switch (role) {
+      case "hr":
+        return <Navigate to="/home2" />;
+      case "instructor":
+        return <Navigate to="/home3" />;
+      case "manager":
+        return <Navigate to="/home4" />;
+      case "user":
+        return <Home />;
+      default:
+        return <Navigate to="/" />;
+    }
   };
 
   return (
