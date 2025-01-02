@@ -26,22 +26,18 @@ def send_otp(email, otp):
     except Exception as e:
         print(f"Error sending OTP: {e}")
 
-def retry_on_db_lock(max_retries=3, delay=0.1):
+def retry_on_db_lock(retries=5, delay=0.1):
     def decorator(f):
         @wraps(f)
-        def wrapper(*args, **kwargs):
-            retries = 0
-            while retries < max_retries:
+        def decorated_function(*args, **kwargs):
+            for _ in range(retries):
                 try:
                     return f(*args, **kwargs)
-                except (OperationalError, PendingRollbackError) as e:
-                    if "database is locked" in str(e) and retries < max_retries - 1:
-                        retries += 1
-                        logging.warning(f"Database locked, attempting retry {retries} of {max_retries}")
-                        db.session.rollback()
-                        time.sleep(delay * (2 ** retries))  # Exponential backoff
-                        continue
-                    raise
+                except Exception as e:
+                    if 'database is locked' in str(e):
+                        time.sleep(delay)
+                    else:
+                        raise
             return f(*args, **kwargs)
-        return wrapper
+        return decorated_function
     return decorator

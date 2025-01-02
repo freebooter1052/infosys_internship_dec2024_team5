@@ -20,3 +20,12 @@ class AuditTrail(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     action = db.Column(db.String(255), nullable=False)
     timestamp = db.Column(db.DateTime, nullable=False)
+
+class Enrollment(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    course_id = db.Column(db.Integer, nullable=False)
+    user_email = db.Column(db.String(120), nullable=False)
+    user_name = db.Column(db.String(120), nullable=False)
+
+    def __repr__(self):
+        return f'<Enrollment {self.user_email} - {self.course_id}>'
