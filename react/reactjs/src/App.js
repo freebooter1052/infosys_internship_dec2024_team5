@@ -10,6 +10,10 @@ import CoursePage from "./components/CoursePage";
 import HomeNoCourse from "./components/HomeNoCourse";
 import AdminEditSuite from "./components/AdminEditSuite";
 import CoursePage2 from "./components/CoursePage2";
+import Approve from "./components/Approve";
+import Home2 from "./components/Home2_HR"
+import Home3 from "./components/Home3_Instructor"
+import Home4 from "./components/Home4_Manager"
 
 function App() {
   const [userRole, setUserRole] = useState(null);
@@ -48,10 +52,14 @@ function App() {
           path="/home" 
           element={<ProtectedRoute><Home /></ProtectedRoute>} 
         />
+        <Route path="/home2" element={<Home2 />} />
+        <Route path="/home3" element={<Home3/>} />
+        <Route path="/home4" element={<Home4 />} />
         <Route path="/reset-page" element={<ResetPage />} />
         <Route path="/Course-page" element={<CoursePage />} />
         <Route path="/admin-edit" element={<AdminEditSuite />} />
         <Route path="/Course-page2" element={<CoursePage2/>}/>
+        <Route path="/approve" element={<Approve />}/>
       </Routes>
     </Router>
   );

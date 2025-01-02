@@ -3,7 +3,6 @@ body {
     font-family: 'Arial', sans-serif;
     line-height: 1.6;
     background-color: #f9f9f9;
-    color: #333;
   }
   
   a {
@@ -15,14 +14,12 @@ body {
     color: #0056b3;
   }
   
-  /* Dashboard container */
   .dashboard-container {
     display: flex;
     flex-direction: column;
     min-height: 100vh;
   }
   
-  /* Header styles */
   .dashboard-header {
     background-color: #2bbbbb;
     color: white;
@@ -44,31 +41,14 @@ body {
   /* Navigation bar */
   .dashboard-nav {
     background-color:hwb(211 0% 0%);
-    color: hwb(211 0% 0%);
-  }
-  
-  .dashboard-nav ul {
+    color:rgb(249, 240, 240);
     display: flex;
+    align-items: center;
     justify-content: center;
-    list-style: none;
-    margin: 0;
-    padding: 0.5rem 0;
+    font-size: 1.8rem;
+    font-weight: 400;
   }
-  
-  .dashboard-nav li {
-    margin: 0 1rem;
-  }
-  
-  .dashboard-nav a {
-    color: rgb(14, 81, 168);
-    font-size: 1rem;
-    font-weight: bold;
-  }
-  
-  .dashboard-nav a:hover {
-    color: #4CAF50;
-  }
-  
+
   /* Main section styles */
   .dashboard-main {
     flex: 1;
