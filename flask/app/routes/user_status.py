@@ -1,7 +1,6 @@
 from flask import Blueprint, request, jsonify
 from app import db
-from app.models import Enrollment
-import logging
+from app.models import Enrollment, Userstatus  # Ensure Userstatus is imported correctly
 
 user_status_blueprint = Blueprint('user_status', __name__)
 
@@ -28,9 +27,12 @@ def get_user_status():
         enrolled_courses = Enrollment.query.filter_by(user_email=user_email).all()
         enrolled_course_ids = [enrollment.course_id for enrollment in enrolled_courses]
 
+        completed_courses = Userstatus.query.filter_by(user_email=user_email, status='completed').all()
+        completed_course_ids = [status.course_id for status in completed_courses]
+
         user_status = {
             'enrolledCourses': enrolled_course_ids,
-            'completedCourses': []  # Add logic for completed courses if needed
+            'completedCourses': completed_course_ids
         }
 
         response = jsonify(user_status)

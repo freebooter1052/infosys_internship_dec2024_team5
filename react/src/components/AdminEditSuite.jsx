@@ -12,6 +12,7 @@ const AdminEditSuite = () => {
   const [courses, setCourses] = useState([]);
   const [editCourse, setEditCourse] = useState(null);
   const [auditTrail, setAuditTrail] = useState([]);
+  const [instructors, setInstructors] = useState([]); // Add state for instructors
 
   // Add session check
   useEffect(() => {
@@ -23,10 +24,11 @@ const AdminEditSuite = () => {
     setUserRole(role.toLowerCase());
   }, [navigate]);
 
-  // Fetch courses and audit trail when the component mounts
+  // Fetch courses, audit trail, and instructors when the component mounts
   useEffect(() => {
     fetchCourses();
     fetchAuditTrail();
+    fetchInstructors(); // Fetch instructors
   }, []); // Empty dependency array to run this effect once on mount
 
   // Fetch courses from the API
@@ -46,6 +48,16 @@ const AdminEditSuite = () => {
       setAuditTrail(response.data);
     } catch (error) {
       console.error('Error fetching audit trail:', error);
+    }
+  };
+
+  // Fetch instructors from the API
+  const fetchInstructors = async () => {
+    try {
+      const response = await axios.get('http://localhost:5000/api/instructors');
+      setInstructors(response.data);
+    } catch (error) {
+      console.error('Error fetching instructors:', error);
     }
   };
 
@@ -122,6 +134,15 @@ const AdminEditSuite = () => {
         <div className="edit-form">
           <h2>Edit Course: {editCourse.title}</h2>
           <label>
+            Title:
+            <input
+              type="text"
+              value={editCourse.title}
+              onChange={(e) => setEditCourse({ ...editCourse, title: e.target.value })}
+            />
+          </label>
+
+          <label>
             Description:
             <textarea
               value={editCourse.description}
@@ -147,11 +168,25 @@ const AdminEditSuite = () => {
             />
           </label>
 
+          <label>
+            Instructor:
+            <select
+              value={editCourse.instructor}
+              onChange={(e) => setEditCourse({ ...editCourse, instructor: e.target.value })}
+            >
+              <option value="">Select Instructor</option>
+              {instructors.map((instructor) => (
+                <option key={instructor.id} value={`${instructor.first_name} ${instructor.last_name}`}>
+                  {instructor.first_name} {instructor.last_name}
+                </option>
+              ))}
+            </select>
+          </label>
+
           <button onClick={handleUpdateCourse} className="update-button">Update Course</button>
         </div>
       )}
 
-      
       <div className="audit-trail">
         {auditTrail.map((entry, index) => (
           <div key={index} className="audit-entry">

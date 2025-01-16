@@ -27,6 +27,10 @@ const LoginPage = () => {
         const userRole = response.data.role.toLowerCase();
         console.log("Setting user role:", userRole); // Debug log
         sessionStorage.setItem("user_role", userRole);
+        sessionStorage.setItem("token", response.data.token);
+        sessionStorage.setItem("user_email", response.data.email);
+        sessionStorage.setItem("user_name", response.data.name);
+        
         navigate("/home");
       })
       .catch((error) => {

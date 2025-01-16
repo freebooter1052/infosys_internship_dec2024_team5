@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import "../styles/CoursePage.css";
+import { useNavigate } from 'react-router-dom';  // Keep useNavigate import here
 
 const CoursePage = () => {
   const [courses, setCourses] = useState([]);
@@ -10,7 +11,15 @@ const CoursePage = () => {
   });
   const [message, setMessage] = useState('');
   const [selectedCourse, setSelectedCourse] = useState(null);
-  const [filter, setFilter] = useState("All Courses"); 
+  const [filter, setFilter] = useState("All Courses");
+  const [loading, setLoading] = useState(true); // Added loading state
+
+  const navigate = useNavigate(); // Initialize useNavigate here
+
+  // Function to navigate to Course Insights
+  const goToCourseInsights = (courseId) => {
+    navigate(`/courseInsights/${courseId}`);
+  };
 
   useEffect(() => {
     const fetchCourses = async () => {
@@ -22,22 +31,29 @@ const CoursePage = () => {
       }
     };
 
-    const fetchUserStatus = async () => {
+    const fetchUserStatus = async (user_email) => {
       try {
-        const userResponse = await axios.get('http://localhost:5000/api/user-status');
+        const userResponse = await axios.get(`http://localhost:5000/api/user-status?email=${user_email}`);
         setUserStatus(userResponse.data);
       } catch (error) {
         console.error('Error fetching user status:', error);
       }
     };
 
+    const user_email = sessionStorage.getItem('user_email');
     fetchCourses();
-    fetchUserStatus();
+    fetchUserStatus(user_email);
+
+    // Set loading to false once the data is fetched
+    setLoading(false);
   }, []);
 
   const handleEnroll = async (courseId, courseTitle) => {
     try {
-      const response = await axios.post(`http://localhost:5000/api/enroll`, { courseId });
+      const user_email = sessionStorage.getItem('user_email');
+      const user_name = sessionStorage.getItem('user_name');
+
+      const response = await axios.post('http://localhost:5000/api/enroll', { courseId, user_email, user_name });
       if (response.status === 200) {
         setUserStatus((prevStatus) => ({
           ...prevStatus,
@@ -82,6 +98,11 @@ const CoursePage = () => {
     return false;
   });
 
+  // Render loading state
+  if (loading) {
+    return <div>Loading data...</div>;
+  }
+
   return (
     <div className="courses-page">
       <h1 className="title">Courses Overview</h1>
@@ -109,13 +130,17 @@ const CoursePage = () => {
         </button>
       </div>
 
+      {/* Course List */}
       <div className="courses-list">
         {filteredCourses.map((course) => (
           <div key={course.id} className="course-card">
             <h2 className="course-title">{course.title}</h2>
             <p className="course-instructor">Instructor: {course.instructor}</p>
             <p className="course-creation-date">
-              Creation Date: {new Date(course.creation_date).toLocaleDateString()}
+              Start Date: {new Date(course.start_date).toLocaleDateString()}
+            </p>
+            <p className="course-ending-date">
+              End Date: {new Date(course.end_date).toLocaleDateString()}
             </p>
             <p className="course-duration">
               Duration: {getDuration(course.start_date, course.end_date)}
@@ -131,6 +156,15 @@ const CoursePage = () => {
                 Enroll
               </button>
             )}
+            {getEnrollmentStatus(course.id) === 'Enrolled' && (
+              <button
+                className="explore-button"
+                onClick={() => goToCourseInsights(course.id)}  // Using dynamic course.id
+              >
+                Explore
+              </button>
+            )}
+            {/* View Details Button for All Courses */}
             <button
               className="view-details-button"
               onClick={() => handleViewDetails(course)}
@@ -141,9 +175,10 @@ const CoursePage = () => {
         ))}
       </div>
 
+      {/* Course Details Modal */}
       {selectedCourse && (
         <div className="course-details-modal">
-          <b><h2>{selectedCourse.title}</h2></b>
+          <h2>{selectedCourse.title}</h2>
           <p>Instructor: {selectedCourse.instructor}</p>
           <p>
             Creation Date: {new Date(selectedCourse.creation_date).toLocaleDateString()}
@@ -152,7 +187,7 @@ const CoursePage = () => {
             Duration: {getDuration(selectedCourse.start_date, selectedCourse.end_date)}
           </p>
           <p>Description: {selectedCourse.description}</p>
-          <button className='closebutton' onClick={() => setSelectedCourse(null)}>Close</button>
+          <button className="close-button" onClick={() => setSelectedCourse(null)}>Close</button>
         </div>
       )}
     </div>
@@ -160,4 +195,3 @@ const CoursePage = () => {
 };
 
 export default CoursePage;
-

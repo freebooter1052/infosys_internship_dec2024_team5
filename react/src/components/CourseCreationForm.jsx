@@ -1,15 +1,30 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import "./../styles/CourseCreationForm.css";
 import axios from "axios";
 
 const CourseCreationForm = ({ onClose }) => {
+  const [instructors, setInstructors] = useState([]);
   const [formData, setFormData] = useState({
     courseId: "",
     courseTitle: "",
     description: "",
     startDate: "",
     endDate: "",
+    instructor: "", // Add instructor field
   });
+
+  useEffect(() => {
+    // Fetch instructors from the API
+    const fetchInstructors = async () => {
+      try {
+        const response = await axios.get("http://localhost:5000/api/instructors");
+        setInstructors(response.data);
+      } catch (error) {
+        console.error("There was an error fetching the instructors!", error);
+      }
+    };
+    fetchInstructors();
+  }, []);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -25,6 +40,7 @@ const CourseCreationForm = ({ onClose }) => {
         description: formData.description,
         start_date: formData.startDate,
         end_date: formData.endDate,
+        instructor: formData.instructor, // Include instructor in submission
       });
       console.log("Course Data Submitted:", response.data);
       alert("Course created and notifications sent!");
@@ -96,6 +112,23 @@ const CourseCreationForm = ({ onClose }) => {
               onChange={handleChange}
               required
             />
+          </div>
+          <div className="form-group">
+            <label htmlFor="instructor">Instructor</label>
+            <select
+              id="instructor"
+              name="instructor"
+              value={formData.instructor}
+              onChange={handleChange}
+              required
+            >
+              <option value="">Select Instructor</option>
+              {instructors.map((instructor) => (
+                <option key={instructor.id} value={`${instructor.first_name} ${instructor.last_name}`}>
+                  {instructor.first_name} {instructor.last_name}
+                </option>
+              ))}
+            </select>
           </div>
           <div className="form-buttons">
             <button type="submit">Submit</button>

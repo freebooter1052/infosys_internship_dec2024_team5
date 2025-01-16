@@ -13,6 +13,7 @@ import Approve from "./components/Approve";
 import Home2 from "./components/Home2_HR";
 import Home3 from "./components/Home3_Instructor";
 import Home4 from "./components/Home4_Manager";
+import CourseInsights from "./components/CourseInsights";
 
 function App() {
   const [userRole, setUserRole] = useState(null);
@@ -25,6 +26,7 @@ function App() {
     }
   }, []);
 
+  // Protected route based on user role
   const ProtectedRoute = ({ children }) => {
     let role = sessionStorage.getItem("user_role");
     console.log("Protected Route - Current role:", role); // Debug log
@@ -56,18 +58,25 @@ function App() {
         <Route path="/signup" element={<SignupPage />} />
         <Route path="/forgot-password" element={<ForgotPasswordPage />} />
         <Route path="/forgot-password2" element={<ForgotPasswordPage2 />} />
-        <Route 
-          path="/home" 
-          element={<ProtectedRoute><Home /></ProtectedRoute>} 
-        />
+        
+        {/* Home page based on user role */}
+        <Route path="/home" element={<ProtectedRoute><Home /></ProtectedRoute>} />
+        
+        {/* Course and content pages */}
+        <Route path="/courseInsights/:courseId" element={<CourseInsights />} />
+        <Route path="/course-page" element={<CoursePage />} />
+        <Route path="/course-page2" element={<CoursePage2 />} />
+        
+        
+        {/* Additional admin or other role-based pages */}
         <Route path="/home2" element={<Home2 />} />
-        <Route path="/home3" element={<Home3/>} />
+        <Route path="/home3" element={<Home3 />} />
         <Route path="/home4" element={<Home4 />} />
+        
+        {/* Reset and approval pages */}
         <Route path="/reset-page" element={<ResetPage />} />
-        <Route path="/Course-page" element={<CoursePage />} />
         <Route path="/admin-edit" element={<AdminEditSuite />} />
-        <Route path="/Course-page2" element={<CoursePage2/>}/>
-        <Route path="/approve" element={<Approve />}/>
+        <Route path="/approve" element={<Approve />} />
       </Routes>
     </Router>
   );
