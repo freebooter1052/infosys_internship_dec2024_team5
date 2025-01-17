@@ -1,7 +1,9 @@
-from flask import Blueprint, request, jsonify, session, make_response
-from app.models import db, Manager
+from flask import Blueprint, request, jsonify, session, make_response, current_app
+from app.models import db, Manager  # Removed User import
 from flask_cors import cross_origin
 import logging
+import jwt
+import datetime
 
 auth_blueprint = Blueprint('auth', __name__)
 
@@ -19,12 +21,19 @@ def signup():
     if existing_manager:
         return jsonify({"error": "Email already registered"}), 400
 
+    role = data['role'].lower()
+    if role == 'learner':
+        role = 'user'
+
+    status = 'approved' if role == 'hr' else 'pending'
+
     new_manager = Manager(
         first_name=data['firstName'],
         last_name=data['lastName'],
         email=data['email'],
         password=data['password'],
-        role=data['role']
+        role=role,
+        status=status  # Set status based on role
     )
     db.session.add(new_manager)
     db.session.commit()
@@ -35,60 +44,58 @@ def signup():
 
 @auth_blueprint.route('/login', methods=['POST'])
 def login():
-    data = request.json
-    logging.info(f"Login attempt with data: {data}")  # Debug log
+    data = request.get_json()
+    logging.info(f"Login attempt with data: {data}")
 
     required_fields = ["email", "password", "role"]
     if not all(field in data for field in required_fields):
         return jsonify({"error": "Email, password, and role are required"}), 400
 
     manager = Manager.query.filter_by(email=data['email']).first()
-    logging.info(f"Found manager: {manager}")  # Debug log
+    logging.info(f"Found manager: {manager}")
     
-    if manager:
-        logging.info(f"Comparing roles: provided={data['role'].lower()}, stored={manager.role.lower()}")  # Debug log
-        
     if not manager:
         return jsonify({"error": "Invalid email"}), 401
     if manager.password != data['password']:
         return jsonify({"error": "Invalid password"}), 401
-    if manager.role.lower() != data['role'].lower():
+    if manager.status != 'approved' and manager.role != 'hr':  # Check if the user is approved or HR
+        return jsonify({"error": "Account not approved"}), 403
+
+    # Normalize roles for comparison
+    provided_role = data['role'].lower()
+    stored_role = manager.role.lower()
+
+    # Treat 'learner' and 'user' as equivalent
+    if provided_role == 'learner':
+        provided_role = 'user'
+    if stored_role == 'learner':
+        stored_role = 'user'
+        manager.role = 'user'
+        db.session.commit()
+
+    logging.info(f"Comparing roles: provided={provided_role}, stored={stored_role}")
+
+    if stored_role != provided_role:
         return jsonify({"error": "Invalid role"}), 401
 
-    # Store the user's email and role in the session
-    session['user_email'] = manager.email
-    session['user_role'] = manager.role.lower()
+    token = jwt.encode({
+        'user_email': manager.email,
+        'role': stored_role,
+        'exp': datetime.datetime.utcnow() + datetime.timedelta(days=1)
+    }, current_app.config['SECRET_KEY'], algorithm='HS256')
     
-    logging.info(f"Login successful for {manager.email} with role {manager.role}")  # Debug log
 
     response = make_response(jsonify({
         "message": "Login successful",
-        "role": manager.role.lower()
+        "token": token,
+        "role": stored_role,
+        "email": manager.email,
+        "name": manager.first_name
     }), 200)
-    response.headers.add("Access-Control-Allow-Origin", "http://localhost:3000")
-    response.headers.add("Access-Control-Allow-Credentials", "true")
-    return response
-'''
-@auth_blueprint.route('/get-user-role', methods=['GET', 'OPTIONS'])
-@cross_origin(supports_credentials=True)
-def get_user_role():
-    if request.method == 'OPTIONS':
-        response = make_response()
-        response.headers.add('Access-Control-Allow-Origin', 'http://localhost:3000')
-        response.headers.add('Access-Control-Allow-Headers', 'Content-Type')
-        response.headers.add('Access-Control-Allow-Methods', 'GET')
-        response.headers.add('Access-Control-Allow-Credentials', 'true')
-        return response
 
-    user_role = session.get('user_role')
-    if user_role:
-        response = make_response(jsonify({"role": user_role.lower()}), 200)
-    else:
-        response = make_response(jsonify({"error": "User role not found"}), 404)
-    
+    print(token)
     response.headers.add("Access-Control-Allow-Origin", "http://localhost:3000")
     response.headers.add("Access-Control-Allow-Credentials", "true")
     return response
-'''
 
 

@@ -1,6 +1,6 @@
 from flask import Blueprint, request, jsonify, session, make_response
 from app import db, mail
-from app.models import Course
+from app.models import Course, Enrollment
 from datetime import datetime
 from flask_mail import Message
 from app.utils import retry_on_db_lock
@@ -22,7 +22,7 @@ def register_course():
     if not data:
         return jsonify({'error': 'No data provided'}), 400
 
-    required_fields = ['id', 'title', 'description', 'start_date', 'end_date']
+    required_fields = ['id', 'title', 'description', 'start_date', 'end_date', 'instructor']
     if not all(field in data for field in required_fields):
         return jsonify({'error': 'Missing required fields'}), 400
 
@@ -38,7 +38,8 @@ def register_course():
         title=data['title'],
         description=data['description'],
         start_date=datetime.strptime(data['start_date'], '%Y-%m-%d').date(),
-        end_date=datetime.strptime(data['end_date'], '%Y-%m-%d').date()
+        end_date=datetime.strptime(data['end_date'], '%Y-%m-%d').date(),
+        instructor=data['instructor']  # Include instructor in course creation
     )
     db.session.add(new_course)
     db.session.commit()
@@ -56,18 +57,29 @@ def register_course():
 @course_blueprint.route('/courses', methods=['GET'])
 @retry_on_db_lock()
 def get_courses():
-    courses = Course.query.all()
-    courses_list = [{
-        'id': course.id,
-        'title': course.title,
-        'description': course.description,
-        'start_date': course.start_date,
-        'end_date': course.end_date
-    } for course in courses]
-    response = make_response(jsonify(courses_list))
-    response.headers.add("Access-Control-Allow-Origin", "http://localhost:3000")
-    response.headers.add("Access-Control-Allow-Credentials", "true")
-    return response
+    try:
+        courses = Course.query.all()
+        courses_list = [{
+            'id': course.id,
+            'title': course.title,
+            'description': course.description,
+            'start_date': course.start_date,
+            'end_date': course.end_date,
+            'instructor': course.instructor  # Include instructor in response
+        } for course in courses]
+        if not courses_list:
+            return jsonify([]), 203  # Return empty array with 200 status
+
+        response = make_response(jsonify(courses_list))
+        response.headers.add("Access-Control-Allow-Origin", "http://localhost:3000")
+        response.headers.add("Access-Control-Allow-Credentials", "true")
+        return response
+    
+    except Exception as e:
+        # Log the error for debugging purposes
+        print(f"Database error: {str(e)}")
+        response = make_response(jsonify({"error": "Failed to fetch courses"}), 500)
+        return response
 
 @course_blueprint.route('/courses/<int:course_id>', methods=['PUT', 'OPTIONS'])
 @retry_on_db_lock()
@@ -75,47 +87,55 @@ def update_course(course_id):
     if request.method == 'OPTIONS':
         response = make_response()
         response.headers.add('Access-Control-Allow-Origin', 'http://localhost:3000')
-        response.headers.add('Access-Control-Allow-Headers', 'Content-Type, User-Role')
+        response.headers.add('Access-Control-Allow-Headers', 'Content-Type, Authorization, User-Role')
         response.headers.add('Access-Control-Allow-Methods', 'PUT')
         response.headers.add('Access-Control-Allow-Credentials', 'true')
         return response
 
-    logging.info(f"Session data: {session}")
-    logging.info(f"User role from session: {session.get('user_role')}")
-    
     try:
         data = request.get_json()
-        logging.info(f"Received update data for course {course_id}: {data}")
-    except Exception as e:
-        logging.error(f"Failed to decode JSON object: {e}")
-        return jsonify({'error': 'Invalid JSON data'}), 400
+        course = Course.query.get(course_id)
+        if not course:
+            return jsonify({'error': 'Course not found'}), 404
 
-    if not data:
-        logging.error('No data provided for update')
-        return jsonify({'error': 'No data provided'}), 400
+        # Update course fields
+        course.title = data.get('title', course.title)
+        course.description = data.get('description', course.description)
+        course.start_date = datetime.strptime(data.get('start_date', course.start_date.strftime('%Y-%m-%d')), '%Y-%m-%d').date()
+        course.end_date = datetime.strptime(data.get('end_date', course.end_date.strftime('%Y-%m-%d')), '%Y-%m-%d').date()
+        course.instructor = data.get('instructor', course.instructor)  # Include instructor in update
 
-    course = Course.query.get(course_id)
-    if not course:
-        logging.error(f"Course with ID {course_id} not found")
-        return jsonify({'error': 'Course not found'}), 404
-
-    course.title = data.get('title', course.title)
-    course.description = data.get('description', course.description)
-    course.start_date = datetime.strptime(data.get('start_date', course.start_date.strftime('%Y-%m-%d')), '%Y-%m-%d').date()
-    course.end_date = datetime.strptime(data.get('end_date', course.end_date.strftime('%Y-%m-%d')), '%Y-%m-%d').date()
-
-    try:
         db.session.commit()
+        
+        response = jsonify({'message': 'Course updated successfully'})
+        response.headers.add('Access-Control-Allow-Origin', 'http://localhost:3000')
+        response.headers.add('Access-Control-Allow-Credentials', 'true')
+        return response
+
     except Exception as e:
         db.session.rollback()
         logging.error(f"Error updating course: {e}")
         return jsonify({'error': str(e)}), 500
 
-    logging.info(f"Course {course_id} updated successfully")
-    response = jsonify({'message': 'Course updated successfully'})
-    response.headers.add("Access-Control-Allow-Origin", "http://localhost:3000")
-    response.headers.add("Access-Control-Allow-Credentials", "true")
-    return response
+@course_blueprint.route('/courses/<int:course_id>/students', methods=['GET'])
+@retry_on_db_lock()
+def get_course_students(course_id):
+    try:
+        enrollments = Enrollment.query.filter_by(course_id=course_id).all()
+        students = [{
+            'name': enrollment.user_name,
+            'email': enrollment.user_email,
+            # 'completed': enrollment.completed
+        } for enrollment in enrollments]
+
+        response = make_response(jsonify(students))
+        response.headers.add("Access-Control-Allow-Origin", "http://localhost:3000")
+        response.headers.add("Access-Control-Allow-Credentials", "true")
+        return response
+
+    except Exception as e:
+        logging.error(f"Error fetching students for course {course_id}: {e}")
+        return jsonify({'error': 'Failed to fetch students'}), 500
 
 def send_course_notification(course, recipient_email):
     try:
@@ -129,6 +149,7 @@ def send_course_notification(course, recipient_email):
                  f"Description: {course.description}\n"
                  f"Start Date: {course.start_date}\n"
                  f"End Date: {course.end_date}\n"
+                 f"Instructor: {course.instructor}\n"  # Include instructor in email
         )
         mail.send(msg)
         logging.info("Email sent successfully")

@@ -1,0 +1,410 @@
+/* CourseOverview */
+.course-overview {
+  font-family: 'Arial', sans-serif;
+  background-color: #f4f7fc;
+  color: #333;
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  max-width: 1500px;
+  margin: 0 auto;
+}
+
+.course-header {
+  text-align: center;
+}
+
+.course-header h1 {
+  font-size: 32px;
+  color: #2d3e5f;
+}
+
+.course-header .description {
+  font-size: 18px;
+  color: #555;
+  margin: 10px 0;
+}
+
+.course-header .instructor {
+  font-weight: bold;
+  color: #3b5d72;
+  margin: 10px 0;
+}
+
+.start-learning-button {
+  padding: 12px 24px;
+  background-color: #4caf50;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  font-size: 18px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.start-learning-button:hover {
+  background-color: #45a049;
+}
+
+/* Course Duration Section */
+.course-duration {
+  background-color: #fff;
+  padding: 20px;
+  border-radius: 10px;
+  margin-top: 20px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.course-duration h3 {
+  font-size: 24px;
+  color: #2d3e5f;
+}
+
+.course-duration p {
+  font-size: 16px;
+  color: #555;
+}
+
+/* Modules */
+.module-list {
+  background-color: #fff;
+  padding: 20px;
+  border-radius: 10px;
+  margin-top: 20px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.toggle-button {
+  background-color: #ff9800;
+  color: white;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 5px;
+  font-size: 16px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+  margin-bottom: 15px;
+}
+
+.toggle-button:hover {
+  background-color: #fb8c00;
+}
+
+.module-item {
+  margin-bottom: 20px;
+}
+
+.module-item h4 {
+  font-size: 22px;
+  color: #4caf50;
+}
+
+.module-item p {
+  font-size: 16px;
+  color: #555;
+}
+
+.module-progress-bar {
+  background-color: #f0f0f0;
+  border-radius: 5px;
+  height: 10px;
+  margin-top: 10px;
+  overflow: hidden;
+}
+
+.progress-bar-filled {
+  height: 100%;
+  transition: width 0.3s;
+}
+
+.progress-bar-filled.completed {
+  background-color: #4caf50;
+}
+
+.progress-bar-filled.in-progress {
+  background-color: #ff9800;
+}
+
+.progress-bar-filled.upcoming {
+  background-color: #9e9e9e;
+}
+
+.quizzes-section {
+  margin-top: 15px;
+}
+
+.quizzes-section h5 {
+  font-size: 18px;
+  color: #333;
+}
+
+.quiz-item {
+  background-color: #fafafa;
+  padding: 12px;
+  border-radius: 5px;
+  margin-bottom: 12px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.quiz-item h6 {
+  font-size: 16px;
+  color: #2d3e5f;
+}
+
+.quiz-item p {
+  font-size: 14px;
+  color: #777;
+}
+
+.quiz-status-not-started {
+  font-weight: bold;
+  color: #f44336;
+}
+
+.quiz-score {
+  font-weight: bold;
+  color: #4caf50;
+}
+
+/* Progress Monitoring */
+.progress-monitoring {
+  background-color: #fff;
+  padding: 20px;
+  border-radius: 10px;
+  margin-top: 20px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.progress-monitoring h3 {
+  font-size: 24px;
+  color: #2d3e5f;
+}
+
+.progress-monitoring p {
+  font-size: 16px;
+  color: #555;
+}
+
+/* Visualization Section */
+.visualization-section {
+  background-color: #fff;
+  padding: 20px;
+  border-radius: 10px;
+  margin-top: 20px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.visualization-section h3 {
+  font-size: 24px;
+  color: #2d3e5f;
+}
+
+.course-progress {
+  margin-top: 15px;
+}
+
+.course-progress h4 {
+  font-size: 20px;
+  color: #4caf50;
+}
+
+.progress-bar {
+  background-color: #e0e0e0;
+  border-radius: 5px;
+  height: 12px;
+}
+
+.progress-bar-filled {
+  background-color: #4caf50;
+  width: 0;
+  height: 100%;
+}
+
+.module-progress {
+  margin-top: 20px;
+}
+
+.module-progress ul {
+  list-style-type: none;
+  padding: 0;
+}
+
+.module-progress li {
+  font-size: 16px;
+  color: #555;
+}
+
+.module-progress .completed {
+  color: #4caf50;
+}
+
+.module-progress .in-progress {
+  color: #ff9800;
+}
+
+.module-progress .upcoming {
+  color: #9e9e9e;
+}
+/* CourseInsights.css */
+
+.course-overview {
+  font-family: Arial, sans-serif;
+  padding: 20px;
+}
+
+.course-header {
+  text-align: center;
+}
+
+.course-header h1 {
+  font-size: 36px;
+  margin-bottom: 10px;
+}
+
+.course-header .description {
+  font-size: 18px;
+  margin-bottom: 15px;
+}
+
+.course-header .instructor {
+  font-size: 16px;
+  margin-bottom: 20px;
+}
+
+.start-learning-button {
+  padding: 10px 20px;
+  font-size: 16px;
+  background-color: #4CAF50;
+  color: white;
+  border: none;
+  cursor: pointer;
+}
+
+.start-learning-button:hover {
+  background-color: #45a049;
+}
+
+.course-duration h3 {
+  font-size: 24px;
+  margin-bottom: 15px;
+}
+
+.course-duration p {
+  font-size: 16px;
+}
+
+.module-list {
+  margin-top: 30px;
+}
+
+.module-list h3 {
+  font-size: 24px;
+}
+
+.toggle-button {
+  padding: 8px 16px;
+  font-size: 16px;
+  background-color: #2196F3;
+  color: white;
+  border: none;
+  cursor: pointer;
+}
+
+.toggle-button:hover {
+  background-color: #1976D2;
+}
+
+.module-item {
+  margin-bottom: 20px;
+}
+
+.module-progress-bar {
+  height: 10px;
+  background-color: #ddd;
+  margin: 10px 0;
+}
+
+.progress-bar-filled {
+  height: 100%;
+  transition: width 0.5s ease;
+}
+
+.progress-bar-filled.completed {
+  background-color: #4CAF50;
+}
+
+.progress-bar-filled.in-progress {
+  background-color: #FFC107;
+}
+
+.progress-bar-filled.upcoming {
+  background-color: #f44336;
+}
+
+.total-quiz-stats {
+  background-color: #f1f1f1;
+  padding: 20px;
+  margin-top: 30px;
+  border-radius: 5px;
+}
+
+.total-quiz-stats h4 {
+  font-size: 24px;
+  margin-bottom: 15px;
+}
+
+.total-quiz-stats p {
+  font-size: 16px;
+  margin: 5px 0;
+  font-weight: bold;
+}
+
+.module-progress-item {
+  margin-bottom: 20px;
+  padding: 15px;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+}
+
+.module-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 10px;
+}
+
+.quiz-progress {
+  margin-top: 10px;
+  padding-left: 15px;
+}
+
+.quiz-list {
+  list-style: none;
+  padding-left: 0;
+}
+
+.quiz-progress-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 5px 0;
+}
+
+.quiz-score {
+  display: flex;
+  gap: 10px;
+}
+
+.pass {
+  color: green;
+}
+
+.fail {
+  color: red;
+}
+
+.not-attempted {
+  color: #666;
+  font-style: italic;
+}
+
