@@ -1,38 +1,38 @@
-from flask import Flask, session, request, jsonify
+from flask import Flask, session
 from flask_cors import CORS
 from flask_sqlalchemy import SQLAlchemy
 from flask_mail import Mail
 from flask_session import Session
 import logging
 from datetime import timedelta
-from dotenv import load_dotenv
-import os
 
 db = SQLAlchemy()
 mail = Mail()
 
 def create_app():
-    load_dotenv()  # Load environment variables from .env file
     app = Flask(__name__)
+    
+    # Enable CORS for all routes
+    CORS(app)
     
     # Configure logging
     logging.basicConfig(level=logging.INFO)
     
-    # Update CORS configuration
+    # Configure CORS
     CORS(app, 
          supports_credentials=True,
          resources={
              r"/api/*": {
                  "origins": ["http://localhost:3000"],
-                 "methods": ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
-                 "allow_headers": ["Content-Type", "Authorization"],
-                 "expose_headers": ["Content-Type", "Authorization"],
-                 "supports_credentials": True
+                 "methods": ["GET", "POST", "PUT", "OPTIONS"],
+                 "allow_headers": ["Content-Type", "Authorization", "User-Role"],
+                 "expose_headers": ["Set-Cookie"],
+                 "max_age": 3600
              }
          })
     
     # Configure your app
-    app.config['SECRET_KEY'] = os.getenv('SECRET_KEY', 'your-generated-secret-key')  # Load from environment variable
+    app.config['SECRET_KEY'] = 'your-secret-key'  # Replace with your secret key
     app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///managers.db'
     app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
     app.config['SESSION_TYPE'] = 'filesystem'
@@ -47,18 +47,6 @@ def create_app():
     mail.init_app(app)
     Session(app)
 
-    # Add debug route to test API
-    @app.route('/api/test', methods=['GET'])
-    def test_route():
-        return jsonify({"message": "API is working"}), 200
-
-    # Add request logging
-    @app.before_request
-    def log_request_info():
-        logging.info(f"Request Path: {request.path}")
-        logging.info(f"Request Method: {request.method}")
-        logging.info(f"Request Headers: {request.headers}")
-
     # Register blueprints
     from app.routes.auth import auth_blueprint
     from app.routes.password import password_blueprint
@@ -66,21 +54,34 @@ def create_app():
     from app.routes.audit import audit_blueprint
     from app.routes.enroll import enroll_blueprint
     from app.routes.user_status import user_status_blueprint
-    from app.routes.user import user_blueprint  # Import user blueprint
-    from app.routes.instructor import instructor_blueprint  # Import instructor blueprint
-    
+    from app.routes.approval import approval_blueprint  # Add this line
+    from app.routes.instructor import instructor_blueprint  # Add this line
+    from app.routes.insights import insights_blueprint  # Add this line
+    from app.routes.module import module_blueprint  # Add this line
+    from app.routes.students import students_blueprint
 
-    logging.info("Registering blueprints...")
     app.register_blueprint(auth_blueprint, url_prefix='/api')
     app.register_blueprint(password_blueprint, url_prefix='/api')
     app.register_blueprint(course_blueprint, url_prefix='/api')
     app.register_blueprint(audit_blueprint, url_prefix='/api')
     app.register_blueprint(enroll_blueprint, url_prefix='/api')
     app.register_blueprint(user_status_blueprint, url_prefix='/api')
-    app.register_blueprint(user_blueprint, url_prefix='/api')  # Register user blueprint under /api
-    app.register_blueprint(instructor_blueprint, url_prefix='/api')  # Register instructor blueprint under /api
+    app.register_blueprint(approval_blueprint, url_prefix='/api')  # Add this line
+    app.register_blueprint(instructor_blueprint, url_prefix='/api')  # Add this line
+    app.register_blueprint(insights_blueprint, url_prefix='/api')  # Add this line
+    app.register_blueprint(module_blueprint, url_prefix='/api')  # Add this line
+    app.register_blueprint(students_blueprint)
 
     with app.app_context():
-        db.create_all()
+        db.create_all()  # Create tables
+        
+        # Run migrations
+        from migrations.add_completed_at import add_completed_at_column
+        from migrations.create_module_completion import create_module_completion_table
+        from migrations.add_test_modules import add_test_modules
+        
+        add_completed_at_column()
+        create_module_completion_table()
+        add_test_modules()  # Add test data
 
     return app

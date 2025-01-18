@@ -1,6 +1,7 @@
 from flask import Blueprint, request, jsonify
 from app import db
-from app.models import Enrollment, Userstatus  # Ensure Userstatus is imported correctly
+from app.models import Enrollment, Userstatus
+import logging
 
 user_status_blueprint = Blueprint('user_status', __name__)
 

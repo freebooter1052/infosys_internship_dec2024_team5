@@ -11,8 +11,7 @@ def upgrade():
     app = create_app()
     with app.app_context():
         with db.engine.connect() as connection:
-            connection.execute(text('ALTER TABLE manager ADD COLUMN status VARCHAR(20) DEFAULT "pending"'))
-            connection.execute(text('ALTER TABLE course ADD COLUMN instructor VARCHAR(100) NOT NULL'))  # Add instructor column
+            connection.execute(text('ALTER TABLE module ADD COLUMN completion_status VARCHAR(20) DEFAULT "not started"'))
 
 if __name__ == "__main__":
     upgrade()
