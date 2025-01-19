@@ -15,6 +15,7 @@ const dummyData = {
   inProgressCourses: 2,
 };
 
+
 const OverallIndividualVisualization = () => {
   const userData = dummyData;
 
