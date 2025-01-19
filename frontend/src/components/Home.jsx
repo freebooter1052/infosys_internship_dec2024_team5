@@ -48,10 +48,12 @@ const Home = () => {
           </Link>
         </section>
 
-        <section id="community">
-          <h2>Community</h2>
-          <p>Engage with other learners and share knowledge.</p>
-          <button onClick={() => alert("Join Community!")}>Join Community</button>
+        <section id="visualization">
+          <h2>Overall Visualization Section</h2>
+          <p>See the completion status and your performance</p>
+          <Link to="/IndVis">
+          <button onClick={() => alert("Join Community!")}>Visualize</button>
+          </Link>
         </section>
 
       </main>
