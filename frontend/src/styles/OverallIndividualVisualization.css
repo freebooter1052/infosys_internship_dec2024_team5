@@ -1,0 +1,141 @@
+/* OverallIndividualVisualization.css */
+
+/* Global Styles */
+body {
+    font-family: 'Arial', sans-serif;
+    background-color: #f4f7fc;
+    color: #333;
+    margin: 0;
+    padding: 0;
+  }
+  
+  h2 {
+    font-size: 1.8rem;
+    color: #4e4e4e;
+    margin-bottom: 1rem;
+  }
+  
+  h3 {
+    font-size: 1.5rem;
+    color: #555;
+  }
+  
+  .overall-visualization {
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+    padding: 2rem;
+    max-width: 1200px;
+    margin: 0 auto;
+    background-color: #fff;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  }
+  
+  /* Courses Taken Section */
+  .courses-taken {
+    background-color: #f9f9f9;
+    padding: 1.5rem;
+    border-radius: 8px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+  }
+  
+  .courses-taken ul {
+    list-style-type: none;
+    padding: 0;
+  }
+  
+  .courses-taken li {
+    font-size: 1.2rem;
+    color: #4a4a4a;
+    margin: 0.5rem 0;
+  }
+  /* Completion Status Section */
+.completion-status {
+    background-color: #f9f9f9;
+    padding: 1.5rem;
+  }
+  
+  .course-completion {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin: 1rem 0;
+  }
+  
+  .course-completion span {
+    font-size: 1rem;
+    color: #413d3d;
+    flex-grow: 5;
+  }
+  
+  /* Ensure the progress bar is wide enough */
+  .course-completion .progress-bar {
+    width: 100%; /* Full width of the container */
+    max-width: 400px; /* Make it responsive */
+    height: 1.5rem;
+    position: relative;
+    overflow:visible;
+  }
+  
+  /* Styling for the progress label to be centered */
+  .course-completion .progress-bar .progress-bar-label {
+    position: absolute;
+    width: 100%;
+    text-align: center;
+    font-weight: bold;
+    color: #5b8c5e;
+    top: 50%;
+    transform: translateY(-50%);
+    white-space: nowrap; /* Prevent text from wrapping */
+    text-overflow: ellipsis; /* Ensure it doesn't get cut off */
+    overflow: hidden;
+  }
+  
+  /* Performance Overview Section */
+  .performance-overview {
+    background-color: #f9f9f9;
+    padding: 1.5rem;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+  }
+  
+  .course-performance {
+    margin-bottom: 2rem;
+  }
+  
+  .course-performance h3 {
+    font-size: 1.4rem;
+    color: #333;
+  }
+  
+  .course-performance p {
+    font-size: 1.1rem;
+    color: #555;
+    margin: 0.5rem 0;
+  }
+  
+  .course-performance .progress-bar {
+    margin-top: 1rem;
+    width: 80%;
+    height: 1.5rem;
+    border-radius: 10px;
+    background-color: #9edea0;
+  }
+  
+  .course-performance .progress-bar .progress-bar-label {
+    color: #d9e2d7;
+  }
+  
+  /* Pie Chart Customization */
+  .pie-chart .recharts-layer {
+    transition: transform 0.3s ease-in-out;
+  }
+  
+  .pie-chart:hover .recharts-layer {
+    transform: scale(1.05);
+  }
+  
+  .recharts-surface {
+    border-radius: 8px;
+  }
+  

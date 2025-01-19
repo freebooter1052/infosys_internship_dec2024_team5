@@ -14,6 +14,7 @@ import Home2 from "./components/Home2_HR";
 import Home3 from "./components/Home3_Instructor";
 import Home4 from "./components/Home4_Manager";
 import CourseInsights from "./components/CourseInsights";
+import OverallIndividualVisualization from "./components/OverallIndividualVisualization";
 
 function App() {
   const [userRole, setUserRole] = useState(null);
@@ -58,6 +59,8 @@ function App() {
         <Route path="/signup" element={<SignupPage />} />
         <Route path="/forgot-password" element={<ForgotPasswordPage />} />
         <Route path="/forgot-password2" element={<ForgotPasswordPage2 />} />
+        <Route path="/IndVis" element={<OverallIndividualVisualization />} />
+        
         
         {/* Home page based on user role */}
         <Route path="/home" element={<ProtectedRoute><Home /></ProtectedRoute>} />
