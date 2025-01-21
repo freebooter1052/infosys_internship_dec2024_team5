@@ -1,0 +1,33 @@
+.course-overview {
+    padding: 20px;
+  }
+  
+  .course-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+  }
+  
+  .course-item {
+    border: 1px solid #ccc;
+    padding: 15px;
+    border-radius: 5px;
+    width: 300px;
+  }
+  
+  .course-item h3 {
+    margin-top: 0;
+  }
+  
+  .course-item button {
+    background-color: #007bff;
+    color: white;
+    border: none;
+    padding: 10px;
+    border-radius: 5px;
+    cursor: pointer;
+  }
+  
+  .course-item button:hover {
+    background-color: #0056b3;
+  }
