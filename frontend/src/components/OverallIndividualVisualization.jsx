@@ -137,7 +137,7 @@ const OverallIndividualVisualization = () => {
             />
             <p>Milestones Achieved: {course.milestones}</p>
             <p>Learning Points: {course.learningPoints}</p>
-            <p>Quiz Performance: {course.quizScore}%</p>
+            {/* <p>Quiz Performance: {course.quizScore}%</p> */}
           </div>
         ))}
       </div>
