@@ -1,0 +1,213 @@
+/* Module Creation Overlay */
+.module-creation-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.6);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+    overflow: hidden; /* Ensures the overlay doesn't cause scrolling */
+  }
+  
+  /* Module Creation Form */
+  .module-creation-form {
+    background-color: #fff;
+    padding: 30px;
+    border-radius: 8px;
+    width: 70%;
+    max-width: 900px;
+    max-height: 80vh;
+    overflow-y: auto; /* Enables scrolling within the form if content exceeds */
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    position: relative;
+  }
+  
+  .module-creation-form h2 {
+    font-size: 28px;
+    margin-bottom: 30px;
+    color: #333;
+    text-align: center;
+  }
+  
+  .module-creation-form form {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+  }
+  
+  .module-creation-form label {
+    font-weight: bold;
+    margin-bottom: 8px;
+    color: #444;
+  }
+  
+  .module-creation-form input,
+  .module-creation-form select,
+  .module-creation-form textarea {
+    padding: 12px;
+    margin-bottom: 16px;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    font-size: 16px;
+    transition: border-color 0.3s ease;
+  }
+  
+  .module-creation-form input[type="file"] {
+    margin-top: 8px;
+  }
+  
+  .module-creation-form input:focus,
+  .module-creation-form select:focus,
+  .module-creation-form textarea:focus {
+    border-color: #007bff;
+    outline: none;
+  }
+  
+  .module-creation-form button {
+    padding: 14px 24px;
+    background-color: #007bff;
+    color: #fff;
+    border: none;
+    border-radius: 8px;
+    font-size: 18px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+    margin-top: 20px;
+  }
+  
+  .module-creation-form button:hover {
+    background-color: #0056b3;
+  }
+  
+  .module-creation-form .error-message {
+    color: #ff4d4d;
+    background-color: #ffe6e6;
+    border: 1px solid #ffcccc;
+    padding: 15px;
+    border-radius: 8px;
+    margin-bottom: 20px;
+    font-weight: bold;
+  }
+  
+  .materials-section {
+    margin-top: 40px;
+  }
+  
+  .materials-section h3 {
+    font-size: 24px;
+    margin-bottom: 15px;
+    color: #333;
+  }
+  
+  .materials-section .material {
+    background-color: #f9f9f9;
+    padding: 20px;
+    border-radius: 8px;
+    margin-bottom: 20px;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+  }
+  
+  .materials-section .remove-material {
+    background-color: #dc3545;
+    border: none;
+    color: #fff;
+    padding: 10px 18px;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+  }
+  
+  .materials-section .remove-material:hover {
+    background-color: #c82333;
+  }
+  
+  .materials-section .remove-question {
+    background-color: #28a745;
+    border: none;
+    color: #fff;
+    padding: 10px 18px;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+  }
+  
+  .materials-section .remove-question:hover {
+    background-color: #218838;
+  }
+  
+  .materials-section .add-question,
+  .materials-section .add-material {
+    background-color: #007bff;
+    color: #fff;
+    padding: 10px 18px;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+    margin-top: 10px;
+  }
+  
+  .materials-section .add-question:hover,
+  .materials-section .add-material:hover {
+    background-color: #0056b3;
+  }
+  
+  .close-btn {
+    padding: 12px 24px;
+    background-color: #f8f9fa;
+    color: #333;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    cursor: pointer;
+    margin-top: 20px;
+    font-size: 16px;
+    width: 100%;
+  }
+  
+  .close-btn:hover {
+    background-color: #e2e6ea;
+  }
+  
+  /* Input and Textarea Styles */
+  input,
+  select,
+  textarea {
+    width: 100%;
+    font-size: 16px;
+  }
+  
+  textarea {
+    resize: vertical;
+  }
+  
+  /* Media Queries for Responsiveness */
+  @media (max-width: 768px) {
+    .module-creation-form {
+      width: 90%;
+      padding: 20px;
+    }
+  
+    .module-creation-form h2 {
+      font-size: 24px;
+    }
+  
+    .materials-section h3 {
+      font-size: 20px;
+    }
+  
+    .module-creation-form button {
+      padding: 12px 20px;
+      font-size: 16px;
+    }
+  
+    .materials-section .remove-material,
+    .materials-section .remove-question,
+    .materials-section .add-material,
+    .materials-section .add-question {
+      width: 100%;
+    }
+  }
+  

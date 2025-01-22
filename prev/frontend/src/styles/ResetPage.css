@@ -1,0 +1,50 @@
+.reset-password-container {
+  width: 500px;
+  padding: 30px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+<<<<<<< HEAD
+  margin: 300px auto 0 auto;
+}
+=======
+  margin-top: 300px;
+  margin-left: 650px;
+}
+
+>>>>>>> f1b7049fff702207143cba28c208910446f866ee
+.input-group {
+  margin-bottom: 15px;
+}
+
+label {
+  display: block;
+  margin-bottom: 5px;
+}
+<<<<<<< HEAD
+=======
+
+>>>>>>> f1b7049fff702207143cba28c208910446f866ee
+input[type="password"] {
+  width: 100%;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 3px;
+}
+<<<<<<< HEAD
+=======
+
+>>>>>>> f1b7049fff702207143cba28c208910446f866ee
+button {
+  background-color: #f57505;
+  color: #fff;
+  padding: 15px 30px;
+<<<<<<< HEAD
+  width: 100%;
+=======
+  /* min-width: 510px; */
+>>>>>>> f1b7049fff702207143cba28c208910446f866ee
+  border: none;
+  border-radius: 3px;
+  cursor: pointer;
+}

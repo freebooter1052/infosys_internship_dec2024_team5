@@ -1,0 +1,2 @@
+from auth_microservices.routes.auth_routes import auth_bp
+from auth_microservices.routes.password_routes import password_bp
