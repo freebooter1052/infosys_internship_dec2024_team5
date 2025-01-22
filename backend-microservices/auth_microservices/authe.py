@@ -15,3 +15,19 @@ def test_service_status():
         "message": "Authentication service is running!",
         "status": "success"
     }), 200
+
+@app.route('/getUserData', methods=['POST'])
+def get_user_data():
+    data = request.get_json()
+    email = data.get('email')
+    user = Manager.query.filter_by(email=email).first()
+    if user:
+        user_data = {
+            "firstName": user.first_name,
+            "lastName": user.last_name,
+            "email": user.email,
+            "role": user.role,
+            "status": user.status
+        }
+        return jsonify(user_data), 200
+    return jsonify({"error": "User not found"}), 404
