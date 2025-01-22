@@ -96,5 +96,23 @@ def login():
     response.headers.add("Access-Control-Allow-Credentials", "true")
     return response
 
+@auth_bp.route('/users', methods=['GET'])  # Add this route
+def get_users():
+    users = Manager.query.filter(Manager.status == 'pending').all()
+    users_list = [{"email": user.email, "status": user.status, "role": user.role} for user in users if user.role != 'hr']
+    return jsonify(users_list)
+
+@auth_bp.route('/updateApprovalStatus', methods=['POST'])  # Add this route
+def update_approval_status():
+    data = request.get_json()
+    email = data.get('email')
+    status = data.get('status')
+    user = Manager.query.filter_by(email=email).first()
+    if user and user.role != 'hr':
+        user.status = status
+        db.session.commit()
+        return jsonify({"message": f"User {email} status updated to {status}"}), 200
+    return jsonify({"error": "User not found or user is HR"}), 404
+
 
 

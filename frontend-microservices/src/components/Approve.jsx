@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import "../styles/Approve.css";
 
-const API_BASE_URL = 'http://localhost:5000/api';  // Add API base URL
+const API_BASE_URL = 'http://localhost:5001/api';  // Add API base URL
 
 const updateApprovalStatus = async (email, status) => {
   try {
