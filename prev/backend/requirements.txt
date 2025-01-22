@@ -2,3 +2,5 @@ Flask
 Flask-Cors
 Flask-SQLAlchemy
 PyJWT
+Flask-Mail
+Flask-Session
