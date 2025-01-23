@@ -78,6 +78,13 @@ const Home = () => {
           <button onClick={() => alert("Update Settings!")}>Manage Requests</button>
           </Link>
         </section>
+        <section id="Hview">
+                          <h2>HR View</h2>
+                          <p>See the performance of organization</p>
+                          <Link to="/HRView">
+                          <button onClick={() => alert("Join Community!")}>view</button>
+                          </Link>
+                </section>
       </main>
 
       <footer className="dashboard-footer">
