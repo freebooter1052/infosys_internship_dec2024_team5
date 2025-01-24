@@ -62,6 +62,13 @@ const Home = () => {
             )}
           </section>
         )}
+        <section id="Mview">
+                  <h2>Manager View</h2>
+                  <p>See the performance of your team</p>
+                  <Link to="/MView">
+                  <button onClick={() => alert("Join Community!")}>view</button>
+                  </Link>
+        </section>
 
        
         

@@ -15,6 +15,8 @@ import Home3 from "./components/Home3_Instructor";
 import Home4 from "./components/Home4_Manager";
 import CourseInsights from "./components/CourseInsights";
 import OverallIndividualVisualization from "./components/OverallIndividualVisualization";
+import ManagerView from "./components/ManagerView";
+import HRView from "./components/HRView";
 
 function App() {
   const [userRole, setUserRole] = useState(null);
@@ -80,6 +82,9 @@ function App() {
         <Route path="/reset-page" element={<ResetPage />} />
         <Route path="/admin-edit" element={<AdminEditSuite />} />
         <Route path="/approve" element={<Approve />} />
+
+        <Route path="/HRView" element={<HRView/>} />
+        <Route path="/MView" element={<ManagerView/>} />
       </Routes>
     </Router>
   );

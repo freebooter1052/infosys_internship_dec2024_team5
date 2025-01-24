@@ -23,7 +23,7 @@ const SignupPage = () => {
   const handleSubmit = (e) => {
     e.preventDefault();
     axios
-      .post("http://127.0.0.1:5001/api/signup", formData)
+      .post("http://127.0.0.1:5000/api/signup", formData)
       .then((response) => {
         alert(response.data.message); // Success message
         navigate("/"); // Navigate to the login page

@@ -138,23 +138,4 @@ body {
   .recharts-surface {
     border-radius: 8px;
   }
-
-  .loading-spinner {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 200px;
-  }
   
-  .alert {
-    margin: 20px;
-    padding: 20px;
-  }
-  
-  /* Add debug outline for development */
-  .overall-visualization > div {
-    border: 1px solid rgba(0, 0, 0, 0.1);
-    padding: 15px;
-    margin: 10px;
-    border-radius: 5px;
-  }

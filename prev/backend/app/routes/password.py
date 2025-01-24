@@ -15,9 +15,10 @@ otp_storage = {}
 @password_blueprint.route('/reset-password', methods=['OPTIONS'])
 def handle_preflight():
     response = make_response()
-    response.headers.add("Access-Control-Allow-Origin", "*")
+    response.headers.add("Access-Control-Allow-Origin", "http://localhost:3000")
     response.headers.add("Access-Control-Allow-Methods", "POST, OPTIONS")
     response.headers.add("Access-Control-Allow-Headers", "Content-Type")
+    response.headers.add("Access-Control-Allow-Credentials", "true")
     return response
 
 # Forgot Password Route: Sends OTP
@@ -27,21 +28,23 @@ def forgot_password():
     data = request.json
     if 'email' not in data:
         response = make_response(jsonify({"error": "Email is required"}), 400)
-        response.headers.add("Access-Control-Allow-Origin", "*")
+        response.headers.add("Access-Control-Allow-Origin", "http://localhost:3000")
+        response.headers.add("Access-Control-Allow-Credentials", "true")
         return response
 
     manager = Manager.query.filter_by(email=data['email']).first()
     if not manager:
         response = make_response(jsonify({"error": "Email not registered"}), 400)
-        response.headers.add("Access-Control-Allow-Origin", "*")
+        response.headers.add("Access-Control-Allow-Origin", "http://localhost:3000")
+        response.headers.add("Access-Control-Allow-Credentials", "true")
         return response
 
     otp = random.randint(100000, 999999)
     otp_storage[data['email']] = otp
-#utils.py
     send_otp(manager.email, otp)
     response = jsonify({"message": "OTP sent to your registered email"})
-    response.headers.add("Access-Control-Allow-Origin", "*")
+    response.headers.add("Access-Control-Allow-Origin", "http://localhost:3000")
+    response.headers.add("Access-Control-Allow-Credentials", "true")
     return response
 
 # Verify OTP Route
@@ -51,7 +54,8 @@ def verify_otp():
     data = request.json
     if 'email' not in data or 'otp' not in data:
         response = make_response(jsonify({"error": "Email and OTP are required"}), 400)
-        response.headers.add("Access-Control-Allow-Origin", "*")
+        response.headers.add("Access-Control-Allow-Origin", "http://localhost:3000")
+        response.headers.add("Access-Control-Allow-Credentials", "true")
         return response
 
     email = data['email']
@@ -60,11 +64,13 @@ def verify_otp():
     if email in otp_storage and otp_storage[email] == otp:
         del otp_storage[email]
         response = jsonify({"message": "OTP verified successfully"})
-        response.headers.add("Access-Control-Allow-Origin", "*")
+        response.headers.add("Access-Control-Allow-Origin", "http://localhost:3000")
+        response.headers.add("Access-Control-Allow-Credentials", "true")
         return response
     else:
         response = jsonify({"error": "Invalid OTP"})
-        response.headers.add("Access-Control-Allow-Origin", "*")
+        response.headers.add("Access-Control-Allow-Origin", "http://localhost:3000")
+        response.headers.add("Access-Control-Allow-Credentials", "true")
         return make_response(response, 400)
 
 # Reset Password Route
@@ -73,23 +79,25 @@ def reset_password():
     data = request.json
     if 'email' not in data or 'new_password' not in data:
         response = make_response(jsonify({"error": "Email and new password are required"}), 400)
-        response.headers.add("Access-Control-Allow-Origin", "*")
+        response.headers.add("Access-Control-Allow-Origin", "http://localhost:3000")
+        response.headers.add("Access-Control-Allow-Credentials", "true")
         return response
 
     # Query manager
     manager = Manager.query.filter_by(email=data['email']).first()
     if not manager:
         response = make_response(jsonify({"error": "Email not registered"}), 400)
-        response.headers.add("Access-Control-Allow-Origin", "*")
+        response.headers.add("Access-Control-Allow-Origin", "http://localhost:3000")
+        response.headers.add("Access-Control-Allow-Credentials", "true")
         return response
 
     # Hash the new password and update it in the database
-    #hashed_password = generate_password_hash(data['new_password'], method='sha256')
     manager.password = data['new_password']
 
     # Commit changes
     db.session.commit()
 
     response = jsonify({"message": "Password reset successfully"})
-    response.headers.add("Access-Control-Allow-Origin", "*")
+    response.headers.add("Access-Control-Allow-Origin", "http://localhost:3000")
+    response.headers.add("Access-Control-Allow-Credentials", "true")
     return response
