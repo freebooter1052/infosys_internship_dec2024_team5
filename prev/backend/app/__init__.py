@@ -60,6 +60,7 @@ def create_app():
     from app.routes.module import module_blueprint  # Add this line
     from app.routes.students import students_blueprint
     from app.routes.individual_progress import individual_progress_blueprint
+    from app.routes.ManagerView import manager_view_blueprint  # Add this line
 
     app.register_blueprint(auth_blueprint, url_prefix='/api')
     app.register_blueprint(password_blueprint, url_prefix='/api')
@@ -73,6 +74,7 @@ def create_app():
     app.register_blueprint(module_blueprint, url_prefix='/api')  # Add this line
     app.register_blueprint(students_blueprint)
     app.register_blueprint(individual_progress_blueprint, url_prefix='/api')
+    app.register_blueprint(manager_view_blueprint, url_prefix='/api')  # Add this line
 
     with app.app_context():
         db.create_all()  # Create tables

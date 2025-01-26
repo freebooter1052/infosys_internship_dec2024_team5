@@ -1,28 +1,41 @@
-import React, { useState } from 'react';
-import '../styles/ManagerView.css'
-
-// Dummy data for demonstration
-const dummyData = [
-  { id: 1, name: 'John Doe', course: 'React Basics', completion: 85, quizScore: 90, status: 'Active', team: 'Team A' },
-  { id: 2, name: 'Jane Smith', course: 'JavaScript Advanced', completion: 100, quizScore: 95, status: 'Completed', team: 'Team B' },
-  { id: 3, name: 'Alice Johnson', course: 'Python for Beginners', completion: 60, quizScore: 75, status: 'Active', team: 'Team A' },
-  { id: 4, name: 'Bob Brown', course: 'Data Structures', completion: 40, quizScore: 65, status: 'Active', team: 'Team B' },
-];
+import React, { useState, useEffect } from 'react';
+import '../styles/ManagerView.css';
 
 const ManagerView = () => {
-  const [filter, setFilter] = useState({ course: '', dateRange: '', employee: '' });
+  const [data, setData] = useState([]);
+  const [filter, setFilter] = useState({ course: '', employee: '' });
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    fetchData();
+  }, [filter]);
+
+  const fetchData = async () => {
+    try {
+      const queryParams = new URLSearchParams({
+        course: filter.course,
+        employee: filter.employee
+      });
+      
+      const response = await fetch(`http://localhost:5000/api/manager-view?${queryParams}`, {
+        credentials: 'include'
+      });
+      
+      if (response.ok) {
+        const result = await response.json();
+        setData(result);
+      }
+    } catch (error) {
+      console.error('Error fetching data:', error);
+    } finally {
+      setLoading(false);
+    }
+  };
 
   const handleFilterChange = (e) => {
     const { name, value } = e.target;
     setFilter({ ...filter, [name]: value });
   };
-
-  const filteredData = dummyData.filter((data) => {
-    return (
-      (filter.course ? data.course.includes(filter.course) : true) &&
-      (filter.employee ? data.name.includes(filter.employee) : true)
-    );
-  });
 
   const teamName = "Team A"; // Hardcoded for demonstration, replace with dynamic team name if needed
 
@@ -48,30 +61,34 @@ const ManagerView = () => {
         />
       </div>
 
-      <table>
-        <thead>
-          <tr>
-            <th>Employee</th>
-            <th>Course</th>
-            <th>Completion %</th>
-            <th>Quiz Score</th>
-            <th>Status</th>
-          </tr>
-        </thead>
-        <tbody>
-          {filteredData.map((item) => (
-            <tr key={item.id}>
-              <td>{item.name}</td>
-              <td>{item.course}</td>
-              <td>{item.completion}%</td>
-              <td>{item.quizScore}</td>
-              <td>{item.status}</td>
+      {loading ? (
+        <p>Loading...</p>
+      ) : (
+        <table>
+          <thead>
+            <tr>
+              <th>Employee</th>
+              <th>Course</th>
+              <th>Completion %</th>
+              <th>Quiz Score</th>
+              <th>Status</th>
             </tr>
-          ))}
-        </tbody>
-      </table>
+          </thead>
+          <tbody>
+            {data.map((item) => (
+              <tr key={item.id}>
+                <td>{item.name}</td>
+                <td>{item.course}</td>
+                <td>{item.completion}%</td>
+                <td>{item.quizScore}</td>
+                <td>{item.status}</td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      )}
     </div>
   );
 };
 
-export default ManagerView; 
+export default ManagerView;
