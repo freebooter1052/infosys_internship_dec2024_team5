@@ -1,22 +1,59 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import '../styles/HRView.css';
 
-// Dummy data for demonstration
-const dummyData = [
-  { id: 1, name: 'John Doe', team: 'Team A', manager: 'Manager 1', course: 'React Basics', completion: 85, quizScore: 90, status: 'Active' },
-  { id: 2, name: 'Jane Smith', team: 'Team B', manager: 'Manager 2', course: 'JavaScript Advanced', completion: 100, quizScore: 95, status: 'Completed' },
-  { id: 3, name: 'Alice Johnson', team: 'Team A', manager: 'Manager 1', course: 'Python for Beginners', completion: 60, quizScore: 75, status: 'Active' },
-  { id: 4, name: 'Bob Brown', team: 'Team B', manager: 'Manager 2', course: 'Data Structures', completion: 40, quizScore: 65, status: 'Active' },
-];
-
-const managerPerformanceData = [
-  { manager: 'Manager 1', team: 'Team A', averageCompletion: 72.5, topPerformer: 'John Doe' },
-  { manager: 'Manager 2', team: 'Team B', averageCompletion: 70, topPerformer: 'Jane Smith' },
-];
-
 const HRView = () => {
+  const [employeeData, setEmployeeData] = useState([]);
+  const [stats, setStats] = useState({
+    overall_completion_rate: 0,
+    top_performer: '',
+    needs_training: [] // Initialize as empty array
+  });
   const [selectedEmployee, setSelectedEmployee] = useState(null);
   const [selectedManager, setSelectedManager] = useState(null);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        setLoading(true);
+        setError(null);
+
+        const [statsResponse, employeesResponse] = await Promise.all([
+          fetch('http://localhost:5000/api/hr-view/stats', {
+            credentials: 'include'
+          }),
+          fetch('http://localhost:5000/api/hr-view/employees', {
+            credentials: 'include'
+          })
+        ]);
+
+        if (!statsResponse.ok || !employeesResponse.ok) {
+          throw new Error('Failed to fetch data');
+        }
+
+        const [statsData, employeesData] = await Promise.all([
+          statsResponse.json(),
+          employeesResponse.json()
+        ]);
+
+        setStats({
+          overall_completion_rate: statsData.overall_completion_rate || 0,
+          top_performer: statsData.top_performer || '',
+          needs_training: Array.isArray(statsData.needs_training) ? statsData.needs_training : []
+        });
+        setEmployeeData(Array.isArray(employeesData) ? employeesData : []);
+      } catch (err) {
+        setError('Failed to fetch data: ' + err.message);
+        console.error('Error fetching data:', err);
+        setEmployeeData([]);  // Ensure it's always an array
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchData();
+  }, []);
 
   const handleEmployeeClick = (employee) => {
     setSelectedEmployee(employee);
@@ -24,14 +61,23 @@ const HRView = () => {
   };
 
   const handleManagerClick = (managerName) => {
-    const managerData = managerPerformanceData.find((data) => data.manager === managerName);
-    setSelectedManager(managerData);
+    const managerTeam = employeeData.filter(emp => emp.manager === managerName);
+    const avgCompletion = managerTeam.reduce((acc, emp) => acc + emp.completion, 0) / managerTeam.length;
+    const topPerformer = managerTeam.reduce((prev, curr) => 
+      (prev.quizScore > curr.quizScore) ? prev : curr
+    );
+
+    setSelectedManager({
+      manager: managerName,
+      team: managerTeam[0]?.team || 'N/A',
+      averageCompletion: avgCompletion.toFixed(2),
+      topPerformer: topPerformer.name
+    });
     setSelectedEmployee(null);
   };
 
-  const overallCompletionRate = (
-    dummyData.reduce((total, employee) => total + employee.completion, 0) / dummyData.length
-  ).toFixed(2);
+  if (loading) return <div>Loading...</div>;
+  if (error) return <div>Error: {error}</div>;
 
   return (
     <div className="hr-view">
@@ -40,20 +86,15 @@ const HRView = () => {
       <div className="insights">
         <div className="insight-card">
           <h3>Overall Completion Rate</h3>
-          <p>{overallCompletionRate}%</p>
+          <p>{stats?.overall_completion_rate || 0}%</p>
         </div>
         <div className="insight-card">
           <h3>Top Performer</h3>
-          <p>{dummyData.sort((a, b) => b.quizScore - a.quizScore)[0].name}</p>
+          <p>{stats?.top_performer || 'N/A'}</p>
         </div>
         <div className="insight-card">
           <h3>Needs Training</h3>
-          <p>
-            {
-              dummyData.filter((employee) => employee.completion < 50).map((e) => e.name).join(', ') ||
-              'None'
-            }
-          </p>
+          <p>{Array.isArray(stats?.needs_training) ? stats.needs_training.join(', ') : 'None'}</p>
         </div>
       </div>
 
@@ -70,11 +111,14 @@ const HRView = () => {
           </tr>
         </thead>
         <tbody>
-          {dummyData.map((item) => (
+          {employeeData.map((item) => (
             <tr key={item.id}>
               <td onClick={() => handleEmployeeClick(item)}>{item.name}</td>
               <td>{item.team}</td>
-              <td onClick={() => handleManagerClick(item.manager)} style={{ color: 'blue', cursor: 'pointer' }}>{item.manager}</td>
+              <td onClick={() => handleManagerClick(item.manager)} 
+                  style={{ color: 'blue', cursor: 'pointer' }}>
+                {item.manager}
+              </td>
               <td>{item.course}</td>
               <td>{item.completion}%</td>
               <td>{item.quizScore}</td>
